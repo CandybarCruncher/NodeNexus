@@ -1,18 +1,14 @@
 import React from "react";
-import Login from "../components/Login";
 import { Outlet } from "react-router-dom";
+import '../CSS/landingPage.css';
 
 const LandingPage = () => {
   return (
     <>
-    <div>
-        Fixed 
-    </div>
-    <div>
-      <Outlet />
-    </div>
+      <div className="form-box">
+        <Outlet />
+      </div>
     </>
-    
   );
 };
 

@@ -7,6 +7,8 @@ import LandingPage from "./pages/LandingPage.jsx";
 import Signup from "./components/Signup.jsx";
 import Landing from "./components/Landing.jsx";
 import Login from "./components/Login.jsx";
+import HomePage from "./pages/HomePage.jsx";
+import NavBar from "./components/NavBar.jsx";
 
 const router = createBrowserRouter([
   {
@@ -14,7 +16,7 @@ const router = createBrowserRouter([
     element: <LandingPage />,
     children: [
       {
-        path: "/",
+        path: "/landing",
         element: <Landing />,
       },
       {
@@ -27,6 +29,19 @@ const router = createBrowserRouter([
       },
     ],
   },
+  {
+    element: <HomePage />,
+    children: [
+      {
+        path: "/home",
+        element: "content",
+      },
+      { 
+        path: "/profile",
+        element: <App />,
+      }
+    ]
+  }
 ]);
 
 ReactDOM.createRoot(document.getElementById("root")).render(
