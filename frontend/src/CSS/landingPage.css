@@ -1,4 +1,6 @@
-:root {
-    display: inline;
-    margin-top: 10%;
+.test {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	height: 100vh;
 }

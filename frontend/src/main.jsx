@@ -8,44 +8,46 @@ import Signup from "./components/Signup.jsx";
 import Landing from "./components/Landing.jsx";
 import Login from "./components/Login.jsx";
 import HomePage from "./pages/HomePage.jsx";
-import NavBar from "./components/NavBar.jsx";
+import Card from "./components/Card.jsx";
+import UserProfile from "./components/UserProfile.jsx";
 
 const router = createBrowserRouter([
-  {
-    path: "/",
-    element: <LandingPage />,
-    children: [
-      {
-        path: "/landing",
-        element: <Landing />,
-      },
-      {
-        path: "/signup",
-        element: <Signup />,
-      },
-      {
-        path: "/login",
-        element: <Login />,
-      },
-    ],
-  },
-  {
-    element: <HomePage />,
-    children: [
-      {
-        path: "/home",
-        element: "content",
-      },
-      { 
-        path: "/profile",
-        element: <App />,
-      }
-    ]
-  }
+	{
+		path: "/",
+		element: <LandingPage />,
+		children: [
+			{
+				path: "/",
+				element: <Landing />,
+			},
+			{
+				path: "/signup",
+				element: <Signup />,
+			},
+			{
+				path: "/login",
+				element: <Login />,
+			},
+		],
+	},
+	{
+		path: "/",
+		element: <HomePage />,
+		children: [
+			{
+				path: "/home",
+				element: <Card />,
+			},
+			{
+				path: "/user",
+				element: <UserProfile />,
+			},
+		],
+	},
 ]);
 
 ReactDOM.createRoot(document.getElementById("root")).render(
-  <React.StrictMode>
-    <RouterProvider router={router} />
-  </React.StrictMode>
+	<React.StrictMode>
+		<RouterProvider router={router} />
+	</React.StrictMode>
 );
