@@ -26,7 +26,7 @@ const LikeBtn = () => {
 						></i>
 					)}
 				</div>
-				<div className="mr-3">likes</div>
+				<span className="mr-2">likes</span>
 			</div>
 		</>
 	);

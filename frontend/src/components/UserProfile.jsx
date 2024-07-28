@@ -1,4 +1,5 @@
 import React from "react";
+import Card from "./Card";
 
 const UserProfile = () => {
 	return (
@@ -34,6 +35,7 @@ const UserProfile = () => {
 					<span className="font-medium">Activity</span>
 					<hr className=" w-full"></hr>
 				</div>
+				<Card />
 			</div>
 		</>
 	);
