@@ -1,14 +1,30 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import "../CSS/landingPage.css";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 const Landing = () => {
+	const [email, setEmail] = useState("");
+	const navigate = useNavigate();
+
+	const submitHandler = async (e) => {
+		const config = {
+			headers: {
+				"Content-type": "application/json",
+			},
+			baseURL: "http://localhost:6969",
+		};
+		e.preventDefault();
+		const newUser = { email };
+		const response = await axios.post("/api/signup", newUser, config);
+		setEmail("");
+		navigate("/login");
+	};
+
 	return (
 		<>
 			<div className="border-solid border-2 rounded-3xl">
-				<form
-					action="/"
-					method="POST"
-				>
+				<form onSubmit={submitHandler}>
 					<div className="grid justify-items-center">
 						<img
 							src="logo.png"
@@ -18,11 +34,13 @@ const Landing = () => {
 					<div className="m-8">
 						<div className="mb-4">
 							<input
-								name="username"
-								type="text"
+								name="email"
+								type="email"
+								value={email}
 								className="form-control rounded-xl"
 								placeholder="email@domain.com"
 								required
+								onChange={(event) => setEmail(event.target.value)}
 							></input>
 						</div>
 						<div className="mb-4">

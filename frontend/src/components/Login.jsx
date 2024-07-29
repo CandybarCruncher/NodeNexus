@@ -1,13 +1,29 @@
-import React from "react";
+import React, { useState } from "react";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 const Login = () => {
+	const [password, setPassword] = useState("");
+	const navigate = useNavigate();
+
+	const submitHandler = async (e) => {
+		const config = {
+			headers: {
+				"Content-type": "application/json",
+			},
+			baseURL: "http://localhost:6969",
+		};
+		e.preventDefault();
+		const existingUser = { password };
+		await axios.post("/api/login", existingUser, config);
+		setPassword("");
+		navigate("/home");
+	};
+
 	return (
 		<>
 			<div className="border-solid border-2 rounded-3xl">
-				<form
-					action="login"
-					method="POST"
-				>
+				<form onSubmit={submitHandler}>
 					<div className="grid justify-items-center">
 						<img
 							src="logo.png"
@@ -17,11 +33,13 @@ const Login = () => {
 					<div className="m-8">
 						<div className="mt-8">
 							<input
-								name="username"
-								type="text"
+								name="password"
+								type="password"
+								value={password}
 								className="form-control rounded-xl w-96"
 								placeholder="Password"
 								required
+								onChange={(event) => setPassword(event.target.value)}
 							></input>
 						</div>
 						<div className="">
@@ -31,7 +49,7 @@ const Login = () => {
 									id="remember"
 								></input>
 								<label
-									for="remember"
+									htmlFor="remember"
 									className="ml-2"
 								>
 									Remember me

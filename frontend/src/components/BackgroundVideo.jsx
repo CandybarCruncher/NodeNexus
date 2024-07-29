@@ -10,7 +10,7 @@ const BackgroundVideo = () => {
 				muted
 			>
 				<source
-					src="bg-video2.mp4"
+					src="bg-video.mp4"
 					type="video/mp4"
 				/>
 				Your browser does not support the video tag.

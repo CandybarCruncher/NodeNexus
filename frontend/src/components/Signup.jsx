@@ -1,13 +1,32 @@
-import React from "react";
+import axios from "axios";
+import React, { useState, useEffect } from "react";
 
 const Signup = () => {
+	const [email, setEmail] = useState("");
+	const [name, setName] = useState("");
+	const [username, setUsername] = useState("");
+	const [password, setPassword] = useState("");
+
+	const submitHandler = async (e) => {
+		console.log("New user created");
+		const config = {
+			headers: {
+				"Content-type": "application/json",
+			},
+			baseURL: "http://localhost:6969",
+		};
+		e.preventDefault();
+		const newUser = { name, email, password };
+		await axios.post("/api/signup", newUser, config);
+		setName("");
+		setEmail("");
+		setPassword("");
+	};
+
 	return (
 		<>
 			<div className="border-solid border-2 rounded-3xl">
-				<form
-					action="signup"
-					method="POST"
-				>
+				<form onSubmit={submitHandler}>
 					<div className="grid justify-items-center">
 						<img
 							src="logo.png"
@@ -19,8 +38,12 @@ const Signup = () => {
 							<input
 								name="email"
 								type="text"
+								value={email}
 								className="form-control rounded-xl"
 								placeholder="email@domain.com"
+								onChange={(event) => {
+									setEmail(event.target.value);
+								}}
 								required
 							></input>
 						</div>
@@ -28,8 +51,12 @@ const Signup = () => {
 							<input
 								name="name"
 								type="text"
+								value={name}
 								className="form-control rounded-xl"
 								placeholder="Full name"
+								onChange={(event) => {
+									setName(event.target.value);
+								}}
 								required
 							></input>
 						</div>
@@ -53,47 +80,47 @@ const Signup = () => {
 						</div>
 						<label>Gender</label>
 						<div className="flex mb-4">
-							<div class="form-check mr-3">
+							<div className="form-check mr-3">
 								<input
-									class="form-check-input"
+									className="form-check-input"
 									type="radio"
 									name="inlineRadioOptions"
 									id="male"
 									value="male"
 								></input>
 								<label
-									class="form-check-label"
-									for="male"
+									className="form-check-label"
+									htmlFor="male"
 								>
 									Male
 								</label>
 							</div>
-							<div class="form-check mr-3">
+							<div className="form-check mr-3">
 								<input
-									class="form-check-input"
+									className="form-check-input"
 									type="radio"
 									name="inlineRadioOptions"
 									id="female"
 									value="female"
 								></input>
 								<label
-									class="form-check-label"
-									for="female"
+									className="form-check-label"
+									htmlFor="female"
 								>
 									Female
 								</label>
 							</div>
-							<div class="form-check mr-3">
+							<div className="form-check mr-3">
 								<input
-									class="form-check-input"
+									className="form-check-input"
 									type="radio"
 									name="inlineRadioOptions"
 									id="other"
 									value="other"
 								></input>
 								<label
-									class="form-check-label"
-									for="other"
+									className="form-check-label"
+									htmlFor="other"
 								>
 									Other
 								</label>
