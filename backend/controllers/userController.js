@@ -49,7 +49,7 @@ const authUser = asyncHandler(async (req, res) => {
 			email: userExists.email,
 			// isAdmin: userExists.isAdmin,
 			pic: userExists.pic,
-			token: generateToken(user._id),
+			token: generateToken(userExists._id),
 		});
 	} else {
 		res.status(401);
@@ -57,5 +57,18 @@ const authUser = asyncHandler(async (req, res) => {
 	}
 });
 
-// module.exports = { allUsers, registerUser, authUser };
-module.exports = { registerUser, authUser };
+const allUsers = asyncHandler(async (req, res) => {
+	const keyword = req.query.search
+		? {
+				$or: [
+					{ name: { $regex: req.query.search, $options: "i" } },
+					{ email: { $regex: req.query.search, $options: "i" } },
+				],
+		  }
+		: null;
+	const Users =
+		keyword && (await user.find(keyword).find({ _id: { $ne: req.User._id } }));
+	res.send(Users);
+});
+
+module.exports = { allUsers, registerUser, authUser };
