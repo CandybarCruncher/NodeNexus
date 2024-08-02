@@ -6,7 +6,7 @@ const CommentBtn = () => {
 			<div className="flex p-2">
 				<div className="mr-1">
 					<i
-						class="fa-regular fa-comment"
+						className="fa-regular fa-comment"
 						style={{ color: "#ffffff" }}
 					></i>
 				</div>

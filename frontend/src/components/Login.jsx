@@ -1,18 +1,13 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import config from "../../config";
 
 const Login = () => {
 	const [password, setPassword] = useState("");
 	const navigate = useNavigate();
 
 	const submitHandler = async (e) => {
-		const config = {
-			headers: {
-				"Content-type": "application/json",
-			},
-			baseURL: "http://localhost:6969",
-		};
 		e.preventDefault();
 		const existingUser = { password };
 		await axios.post("/api/login", existingUser, config);

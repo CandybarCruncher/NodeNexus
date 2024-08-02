@@ -8,8 +8,12 @@ const HomePage = () => {
 		<>
 			<NavBar />
 			<div className="flex">
-				<SideBar />
-				<Outlet />
+				<div className="hidden lg:inline-block">
+					<SideBar />
+				</div>
+				<div className="flex w-full backdrop-blur-sm bg-white/5 p-3 m-2 rounded-2xl h-fit justify-center">
+					<Outlet />
+				</div>
 			</div>
 		</>
 	);

@@ -2,21 +2,16 @@ import React, { useEffect, useState } from "react";
 import "../CSS/landingPage.css";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import config from "../../config";
 
 const Landing = () => {
 	const [email, setEmail] = useState("");
 	const navigate = useNavigate();
 
 	const submitHandler = async (e) => {
-		const config = {
-			headers: {
-				"Content-type": "application/json",
-			},
-			baseURL: "http://localhost:6969",
-		};
 		e.preventDefault();
 		const newUser = { email };
-		const response = await axios.post("/api/signup", newUser, config);
+		await axios.post("/api/signup", newUser, config);
 		setEmail("");
 		navigate("/login");
 	};

@@ -1,26 +1,22 @@
 import axios from "axios";
 import React, { useState, useEffect } from "react";
+import config from "../../config";
 
 const Signup = () => {
 	const [email, setEmail] = useState("");
 	const [name, setName] = useState("");
 	const [username, setUsername] = useState("");
 	const [password, setPassword] = useState("");
+	const [gender, setGender] = useState("");
 
 	const submitHandler = async (e) => {
-		console.log("New user created");
-		const config = {
-			headers: {
-				"Content-type": "application/json",
-			},
-			baseURL: "http://localhost:6969",
-		};
 		e.preventDefault();
-		const newUser = { name, email, password };
+		const newUser = { email, name, username, password, gender };
 		await axios.post("/api/signup", newUser, config);
 		setName("");
 		setEmail("");
 		setPassword("");
+		console.log("New user created");
 	};
 
 	return (
@@ -64,8 +60,12 @@ const Signup = () => {
 							<input
 								name="username"
 								type="text"
+								value={username}
 								className="form-control rounded-xl"
 								placeholder="Username"
+								onChange={(event) => {
+									setUsername(event.target.value);
+								}}
 								required
 							></input>
 						</div>
@@ -75,11 +75,19 @@ const Signup = () => {
 								type="password"
 								className="form-control rounded-xl"
 								placeholder="Password"
+								onChange={(event) => {
+									setPassword(event.target.value);
+								}}
 								required
 							></input>
 						</div>
 						<label>Gender</label>
-						<div className="flex mb-4">
+						<div
+							className="flex mb-4"
+							onChange={(event) => {
+								setGender(event.target.value);
+							}}
+						>
 							<div className="form-check mr-3">
 								<input
 									className="form-check-input"

@@ -10,6 +10,7 @@ import Login from "./components/Login.jsx";
 import HomePage from "./pages/HomePage.jsx";
 import Card from "./components/Card.jsx";
 import UserProfile from "./components/UserProfile.jsx";
+import Chats from "./components/Chats.jsx";
 
 const router = createBrowserRouter([
 	{
@@ -41,6 +42,10 @@ const router = createBrowserRouter([
 			{
 				path: "/user",
 				element: <UserProfile />,
+			},
+			{
+				path: "/chat",
+				element: <Chats />,
 			},
 		],
 	},

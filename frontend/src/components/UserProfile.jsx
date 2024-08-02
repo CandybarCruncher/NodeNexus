@@ -4,7 +4,7 @@ import Card from "./Card";
 const UserProfile = () => {
 	return (
 		<>
-			<div className="ml-2 mt-2">
+			<div className="ml-2 border rounded-xl mt-2">
 				<div className="rounded-t-xl overflow-hidden">
 					<img
 						src="https://images.unsplash.com/photo-1709884735646-897b57461d61?q=80&w=2128&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
@@ -32,7 +32,7 @@ const UserProfile = () => {
 					</div>
 				</div>
 				<div className="flex items-center">
-					<span className="font-medium">Activity</span>
+					<span className="font-medium px-3">Activity</span>
 					<hr className=" w-full"></hr>
 				</div>
 				<Card />

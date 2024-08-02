@@ -6,7 +6,7 @@ const ShareBtn = () => {
 			<div className="flex p-2">
 				<div className="mr-1">
 					<i
-						class="fa-solid fa-paper-plane"
+						className="fa-solid fa-paper-plane"
 						style={{ color: "#ffffff" }}
 					></i>
 				</div>
