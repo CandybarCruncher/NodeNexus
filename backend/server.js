@@ -3,7 +3,11 @@ const chat = require("./data/data");
 const dotenv = require("dotenv");
 const connectDB = require("./config/db");
 const userRoutes = require("./routes/userRoutes");
+const chatRoutes = require("./routes/chatRoutes");
+const messageRoutes = require("./routes/messageRoutes");
+
 const { notFound, errorHandler } = require("./middleware/errorMiddleware");
+const message = require("./models/messageModel");
 
 const app = express();
 dotenv.config();
@@ -23,7 +27,9 @@ app.get("/node/:id", (req, res) => {
 	res.send(node);
 });
 
-app.use("/api", userRoutes);
+app.use("/api/usr", userRoutes);
+app.use("/api/cht", chatRoutes);
+app.use("/api/msg", messageRoutes);
 
 app.use(notFound);
 app.use(errorHandler);
