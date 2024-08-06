@@ -8,8 +8,11 @@ const messageRoutes = require("./routes/messageRoutes");
 
 const { notFound, errorHandler } = require("./middleware/errorMiddleware");
 const message = require("./models/messageModel");
+const cors = require("cors");
+
 
 const app = express();
+app.use(cors());
 dotenv.config();
 connectDB();
 app.use(express.json());
