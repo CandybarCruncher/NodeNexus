@@ -1,5 +1,6 @@
 import React from "react";
 import Card from "./Card";
+import { faker } from "@faker-js/faker";
 
 const UserProfile = () => {
 	return (
@@ -7,17 +8,19 @@ const UserProfile = () => {
 			<div className="ml-2 border rounded-xl mt-2">
 				<div className="rounded-t-xl overflow-hidden">
 					<img
-						src="https://images.unsplash.com/photo-1709884735646-897b57461d61?q=80&w=2128&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+						src={faker.image.image()}
 						className="h-[12rem] w-[65rem] object-cover"
 					></img>
 				</div>
 				<div className="mt-4 ml-6 rounded-full flex">
 					<div>
 						<img
-							src="https://images.unsplash.com/photo-1709884735626-63e92727d8b6?q=80&w=2128&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+							src={faker.image.avatar()}
 							className="size-52 rounded-full"
 						></img>
-						<p className="m-4 text-3xl font-semibold">@username</p>
+						<p className="m-4 text-3xl font-semibold">
+							{faker.name.fullName()}
+						</p>
 					</div>
 					<span className="m-8 text-xl  font-semibold">2 posts</span>
 					<p className="m-8 text-xl font-semibold">2M nodes</p>

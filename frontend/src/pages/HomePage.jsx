@@ -8,10 +8,10 @@ const HomePage = () => {
 		<>
 			<NavBar />
 			<div className="flex">
-				<div className="hidden lg:inline-block">
+				<div className="hidden h-full lg:inline-block">
 					<SideBar />
 				</div>
-				<div className="flex w-full backdrop-blur-sm bg-white/5 p-3 m-2 rounded-2xl h-fit justify-center">
+				<div className="w-full backdrop-blur-sm bg-white/5 m-2 rounded-2xl">
 					<Outlet />
 				</div>
 			</div>

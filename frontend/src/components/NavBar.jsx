@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import SideBar from "./SideBar";
-import "../CSS/homePage.css";
 
 const NavBar = () => {
 	const [isMenuOpen, setIsMenuOpen] = useState(false);

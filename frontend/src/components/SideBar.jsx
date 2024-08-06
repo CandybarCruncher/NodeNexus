@@ -1,10 +1,9 @@
 import React from "react";
 import UserBanner from "./UserBanner";
-import "../CSS/homePage.css";
 
 const SideBar = () => {
 	return (
-		<div className="sticky top-[4.5rem] bg-[#0b0c10] backdrop-blur-sm bg-white/5 relative p-3 m-2 rounded-2xl lg:w-[25rem] ">
+		<div className="flex flex-col h-[calc(100vh-80px)] overflow-hidden backdrop-blur-sm bg-white/5 relative p-3 m-2 rounded-2xl lg:w-[25rem] ">
 			<ul
 				className="nav nav-pills mb-3 w-full flex justify-center md:justify-start"
 				id="pills-tab"
@@ -46,7 +45,7 @@ const SideBar = () => {
 				</li>
 			</ul>
 			<div
-				className="tab-content"
+				className="tab-content overflow-y-auto"
 				id="pills-tabContent"
 			>
 				<div
