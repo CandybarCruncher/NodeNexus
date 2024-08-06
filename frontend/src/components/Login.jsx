@@ -1,16 +1,20 @@
-import React, { useState } from "react";
-import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { useState } from "react";
+
+import { useNavigate, useOutletContext } from "react-router-dom";
 import config from "../../config";
 
 const Login = () => {
+	const { sharedValue } = useOutletContext();
 	const [password, setPassword] = useState("");
 	const navigate = useNavigate();
 
 	const submitHandler = async (e) => {
 		e.preventDefault();
-		const existingUser = { password };
-		await axios.post("/api/login", existingUser, config);
+		const email = sharedValue;
+		const existingUser = { password, email };
+		// console.log(existingUser);
+
+		await config.post("/api/usr/login", existingUser);
 		setPassword("");
 		navigate("/home");
 	};
@@ -26,6 +30,23 @@ const Login = () => {
 						></img>
 					</div>
 					<div className="m-8">
+						<div
+							className="mb-4 text-center drop-shadow-xl text-xl"
+							style={{ textShadow: "0 0 5px black" }}
+						>
+							{sharedValue.localeCompare("") ? (
+								<div>
+									<p>{sharedValue}</p>
+								</div>
+							) : (
+								<a
+									href="/"
+									className=" text-red-500 hover:text-red-400"
+								>
+									{"enter your email here"}
+								</a>
+							)}
+						</div>
 						<div className="mt-8">
 							<input
 								name="password"

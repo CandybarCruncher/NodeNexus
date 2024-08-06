@@ -3,9 +3,9 @@ const user = require("../models/userModel");
 const generateToken = require("../config/generateToken");
 
 const registerUser = asyncHandler(async (req, res) => {
-	console.log(req.body);
-	const { name, email, password, pic } = req.body;
-	if (!name || !email || !password) {
+	const { email, username, name, password, pic, gender } = req.body;
+
+	if (!email || !username || !name || !password || !gender) {
 		res.status(400);
 		throw new Error("Please Enter all the Fields");
 	}
@@ -17,23 +17,42 @@ const registerUser = asyncHandler(async (req, res) => {
 	}
 
 	const User = await user.create({
-		name,
 		email,
+		username,
+		name,
 		password,
 		pic,
+		gender,
 	});
+
 	if (User) {
 		res.status(201).json({
 			_id: User._id,
-			name: User.name,
 			email: User.email,
+			username: User.username,
+			name: User.name,
 			// isAdmin: user.isAdmin,
 			pic: User.pic,
+			gender: User.gender,
 			token: generateToken(User._id),
 		});
 	} else {
 		res.status(400);
 		throw new Error("failed to create user");
+	}
+});
+
+const userExists = asyncHandler(async (req, res) => {
+	const { email } = req.body;
+	console.log(req.body);
+	const userExists = await user.findOne({ email });
+	if (userExists) {
+		res.json({
+			_id: userExists._id,
+		});
+	} else {
+		// res.status(203);
+		throw new Error("mail not registered");
 	}
 });
 
@@ -71,4 +90,4 @@ const allUsers = asyncHandler(async (req, res) => {
 	res.send(Users);
 });
 
-module.exports = { allUsers, registerUser, authUser };
+module.exports = { allUsers, registerUser, authUser, userExists };

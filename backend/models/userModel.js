@@ -2,13 +2,16 @@ const mongoose = require("mongoose");
 
 const userModel = mongoose.Schema(
 	{
+		email: { type: "String", required: true, unique: true },
+		username: { type: "String", required: true, unique: true },
 		name: { type: "String", required: true },
-		email: { type: "String", unique: true, required: true, unique: true },
 		password: { type: "String", required: true },
 		pic: {
 			type: "String",
 			default: "https://icon-library.com/images/icon-user/icon-user-15.jpg",
 		},
+
+		gender: { type: "String", required: true },
 	},
 	{
 		timestamps: true,

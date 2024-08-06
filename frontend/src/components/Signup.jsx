@@ -1,22 +1,26 @@
-import axios from "axios";
-import React, { useState, useEffect } from "react";
+import { useState } from "react";
 import config from "../../config";
+import { useNavigate, useOutletContext } from "react-router-dom";
 
 const Signup = () => {
+	const { sharedValue } = useOutletContext();
 	const [email, setEmail] = useState("");
 	const [name, setName] = useState("");
 	const [username, setUsername] = useState("");
 	const [password, setPassword] = useState("");
 	const [gender, setGender] = useState("");
+	const navigate = useNavigate();
 
 	const submitHandler = async (e) => {
 		e.preventDefault();
 		const newUser = { email, name, username, password, gender };
-		await axios.post("/api/signup", newUser, config);
+		await config.post("/api/usr/signup", newUser);
 		setName("");
+		setUsername("");
 		setEmail("");
 		setPassword("");
-		console.log("New user created");
+		setGender("");
+		navigate("/home");
 	};
 
 	return (
@@ -34,8 +38,8 @@ const Signup = () => {
 							<input
 								name="email"
 								type="text"
-								value={email}
-								className="form-control rounded-xl"
+								value={sharedValue.localeCompare("") ? sharedValue : email}
+								className="form-control rounded-xl "
 								placeholder="email@domain.com"
 								onChange={(event) => {
 									setEmail(event.target.value);

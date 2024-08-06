@@ -1,19 +1,25 @@
-import React, { useEffect, useState } from "react";
+import { useState } from "react";
 import "../CSS/landingPage.css";
-import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useOutletContext } from "react-router-dom";
 import config from "../../config";
 
 const Landing = () => {
+	const { setSharedValue } = useOutletContext();
 	const [email, setEmail] = useState("");
 	const navigate = useNavigate();
 
 	const submitHandler = async (e) => {
 		e.preventDefault();
 		const newUser = { email };
-		await axios.post("/api/signup", newUser, config);
-		setEmail("");
-		navigate("/login");
+		setSharedValue(email);
+		try {
+			await config.post("/api/usr/email", newUser);
+			setEmail("");
+			navigate("/login");
+		} catch (error) {
+			setEmail("");
+			navigate("/signup");
+		}
 	};
 
 	return (
