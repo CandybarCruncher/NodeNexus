@@ -4,7 +4,7 @@ import { useNavigate, useOutletContext } from "react-router-dom";
 
 const Signup = () => {
 	const { sharedValue } = useOutletContext();
-	const [email, setEmail] = useState("");
+	const [email, setEmail] = useState(sharedValue);
 	const [name, setName] = useState("");
 	const [username, setUsername] = useState("");
 	const [password, setPassword] = useState("");
@@ -38,7 +38,7 @@ const Signup = () => {
 							<input
 								name="email"
 								type="text"
-								value={sharedValue.localeCompare("") ? sharedValue : email}
+								value={email}
 								className="form-control rounded-xl "
 								placeholder="email@domain.com"
 								onChange={(event) => {
