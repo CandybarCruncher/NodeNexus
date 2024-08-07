@@ -3,12 +3,12 @@ import ReactDOM from "react-dom/client";
 import "./index.css";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import LandingPage from "./pages/LandingPage.jsx";
-import Signup from "./components/Signup.jsx";
-import Landing from "./components/Landing.jsx";
-import Login from "./components/Login.jsx";
+import Signup from "./components/auth/Signup.jsx";
+import Landing from "./components/auth//Landing.jsx";
+import Login from "./components/auth/Login.jsx";
 import HomePage from "./pages/HomePage.jsx";
-import Card from "./components/Card.jsx";
-import UserProfile from "./components/UserProfile.jsx";
+import Post from "./components/profile/Post.jsx";
+import UserProfile from "./components/profile/UserProfile.jsx";
 import Chats from "./components/conversation/Chats.jsx";
 
 const router = createBrowserRouter([
@@ -36,7 +36,7 @@ const router = createBrowserRouter([
 		children: [
 			{
 				path: "/home",
-				element: <Card />,
+				element: <Post />,
 			},
 			{
 				path: "/user",

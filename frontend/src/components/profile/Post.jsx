@@ -1,16 +1,16 @@
 import React from "react";
-import LikeBtn from "./LikeBtn";
-import CommentBtn from "./CommentBtn";
-import ShareBtn from "./ShareBtn";
-import UserBanner from "./UserBanner";
+import LikeBtn from "../buttons/LikeBtn";
+import CommentBtn from "../buttons/CommentBtn";
+import ShareBtn from "../buttons/ShareBtn";
 import { faker } from "@faker-js/faker";
+import ContactCard from "../ContactCard";
 
-const Card = () => {
+const Post = () => {
 	return (
 		<>
 			<div className="ml-3 my-2 bg-[#12171d] rounded-2xl w-[34rem]">
 				<div className="flex justify-between items-center">
-					<UserBanner />
+					<ContactCard />
 					<i className="fa-solid fa-ellipsis-vertical mr-5"></i>
 				</div>
 
@@ -30,4 +30,4 @@ const Card = () => {
 	);
 };
 
-export default Card;
+export default Post;

@@ -1,7 +1,12 @@
 import React from "react";
-import UserBanner from "./UserBanner";
+import { useNavigate } from "react-router-dom";
+import ContactCard from "./ContactCard";
 
 const SideBar = () => {
+	const navigate = useNavigate();
+	const clickHandler = async (e) => {
+		navigate("/chat");
+	};
 	return (
 		<div className="flex flex-col h-[calc(100vh-80px)] overflow-hidden backdrop-blur-sm bg-white/5 relative p-3 m-2 rounded-2xl lg:w-[25rem] ">
 			<ul
@@ -54,8 +59,9 @@ const SideBar = () => {
 					role="tabpanel"
 					aria-labelledby="pills-home-tab"
 				>
-					<UserBanner />
-					<UserBanner />
+					<button onClick={clickHandler}>
+						<ContactCard />
+					</button>
 				</div>
 				<div
 					className="tab-pane fade"
@@ -63,22 +69,7 @@ const SideBar = () => {
 					role="tabpanel"
 					aria-labelledby="pills-profile-tab"
 				>
-					<UserBanner />
-					<UserBanner />
-					<UserBanner />
-					<UserBanner />
-					<UserBanner />
-					<UserBanner />
-					<UserBanner />
-
-					<UserBanner />
-					<UserBanner />
-					<UserBanner />
-					<UserBanner />
-					<UserBanner />
-					<UserBanner />
-					<UserBanner />
-					<UserBanner />
+					<ContactCard />
 				</div>
 			</div>
 		</div>

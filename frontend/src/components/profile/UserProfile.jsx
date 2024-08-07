@@ -1,5 +1,5 @@
 import React from "react";
-import Card from "./Card";
+import Post from "../profile/Post.jsx";
 import { faker } from "@faker-js/faker";
 
 const UserProfile = () => {
@@ -38,7 +38,7 @@ const UserProfile = () => {
 					<span className="font-medium px-3">Activity</span>
 					<hr className=" w-full"></hr>
 				</div>
-				<Card />
+				<Post />
 			</div>
 		</>
 	);

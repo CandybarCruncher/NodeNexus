@@ -1,7 +1,8 @@
 import { useState } from "react";
 
 import { useNavigate, useOutletContext } from "react-router-dom";
-import config from "../../config";
+import config from "../../../config";
+import SubmitBtn from "../buttons/SubmitBtn";
 
 const Login = () => {
 	const { sharedValue } = useOutletContext();
@@ -76,9 +77,7 @@ const Login = () => {
 							</div>
 						</div>
 						<div className="mt-4">
-							<button className="btn bg-[#45a29e] rounded-full size-full">
-								Plug-in
-							</button>
+							<SubmitBtn Placeholder="Plug-in" />
 						</div>
 					</div>
 				</form>

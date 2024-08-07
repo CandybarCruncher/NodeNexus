@@ -1,6 +1,7 @@
 import { useState } from "react";
-import config from "../../config";
 import { useNavigate, useOutletContext } from "react-router-dom";
+import SubmitBtn from "../buttons/SubmitBtn";
+import config from "../../../config";
 
 const Signup = () => {
 	const { sharedValue } = useOutletContext();
@@ -139,7 +140,7 @@ const Signup = () => {
 							</div>
 						</div>
 						<div className="mb-4">
-							<SubmitBtn />
+							<SubmitBtn Placeholder="Commit" />
 						</div>
 						<div className="grid justify-items-center mb-3 text-center">
 							<p>

@@ -1,7 +1,7 @@
 import { useState } from "react";
-import "../CSS/landingPage.css";
 import { useNavigate, useOutletContext } from "react-router-dom";
-import config from "../../config";
+import config from "../../../config";
+import SubmitBtn from "../buttons/SubmitBtn";
 
 const Landing = () => {
 	const { setSharedValue } = useOutletContext();
@@ -45,9 +45,7 @@ const Landing = () => {
 							></input>
 						</div>
 						<div className="mb-4">
-							<button className="btn bg-[#45a29e] rounded-full size-full">
-								Proceed
-							</button>
+							<SubmitBtn Placeholder="Proceed" />
 						</div>
 						<div className="grid justify-items-center m-3 text-center">
 							<p>

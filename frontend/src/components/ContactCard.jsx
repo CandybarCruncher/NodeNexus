@@ -1,7 +1,7 @@
 import React from "react";
 import { faker } from "@faker-js/faker";
 
-const UserBanner = () => {
+const ContactCard = () => {
 	return (
 		<>
 			<div className="flex items-center">
@@ -19,4 +19,4 @@ const UserBanner = () => {
 	);
 };
 
-export default UserBanner;
+export default ContactCard;
