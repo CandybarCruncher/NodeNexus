@@ -4,6 +4,8 @@ import { useNavigate, useOutletContext } from "react-router-dom";
 import config from "../../../config";
 import SubmitBtn from "../buttons/SubmitBtn";
 
+import { setUserData } from "../../../local";
+
 const Login = () => {
 	const { sharedValue } = useOutletContext();
 	const [password, setPassword] = useState("");
@@ -13,9 +15,10 @@ const Login = () => {
 		e.preventDefault();
 		const email = sharedValue;
 		const existingUser = { password, email };
-		// console.log(existingUser);
 
-		await config.post("/api/usr/login", existingUser);
+		const userData = await config.post("/api/usr/login", existingUser);
+		setUserData(userData);
+
 		setPassword("");
 		navigate("/home");
 	};

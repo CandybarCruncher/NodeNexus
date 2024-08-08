@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useNavigate, useOutletContext } from "react-router-dom";
 import SubmitBtn from "../buttons/SubmitBtn";
 import config from "../../../config";
+import { setUserData } from "../../../local";
 
 const Signup = () => {
 	const { sharedValue } = useOutletContext();
@@ -15,7 +16,9 @@ const Signup = () => {
 	const submitHandler = async (e) => {
 		e.preventDefault();
 		const newUser = { email, name, username, password, gender };
-		await config.post("/api/usr/signup", newUser);
+		const userData = await config.post("/api/usr/signup", newUser);
+		setUserData(userData);
+
 		setName("");
 		setUsername("");
 		setEmail("");
