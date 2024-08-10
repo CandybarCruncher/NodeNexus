@@ -1,7 +1,7 @@
 import React from "react";
 import { faker } from "@faker-js/faker";
 
-const ContactCard = () => {
+const ContactCard = ({ chatname }) => {
 	return (
 		<>
 			<div className="flex items-center">
@@ -12,7 +12,7 @@ const ContactCard = () => {
 					></img>
 				</div>
 				<div>
-					<strong className="ml-1 text-xl">{faker.name.fullName()}</strong>
+					<strong className="ml-1 text-xl">{chatname}</strong>
 				</div>
 			</div>
 		</>

@@ -14,7 +14,7 @@ const accessChat = asyncHandler(async (req, res) => {
 	var isChat = await chat
 		.find({
 			isCluster: false,
-			$or: [
+			$and: [
 				{ users: { $elemMatch: { $eq: req.User._id } } },
 				{ users: { $elemMatch: { $eq: userId } } },
 			],
@@ -32,7 +32,7 @@ const accessChat = asyncHandler(async (req, res) => {
 	} else {
 		var chatData = {
 			chatName: "sender",
-			isGroupChat: false,
+			isCluster: false,
 			users: [req.User._id, userId],
 		};
 	}
