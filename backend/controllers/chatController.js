@@ -76,7 +76,7 @@ const createGroupChat = asyncHandler(async (req, res) => {
 	}
 
 	// var users = JSON.parse(req.body.users);
-	var users = req.body.users;
+	const { users, name, icon } = req.body;
 
 	if (users.length < 2) {
 		return res
@@ -87,9 +87,10 @@ const createGroupChat = asyncHandler(async (req, res) => {
 
 	try {
 		const groupChat = await chat.create({
-			chatName: req.body.name,
+			chatName: name,
 			users: users,
 			isCluster: true,
+			icon: icon,
 			clusterAdmin: req.User._id,
 		});
 
