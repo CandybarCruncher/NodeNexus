@@ -63,9 +63,9 @@ const Header = () => {
 	};
 	const checkUser = () => {
 		try {
-			return chats[0]?.users[0] == getUserData()._id
-				? chats[0]?.users[0]
-				: chats[0]?.users[1];
+			return chats[0]?.users[0]._id == getUserData()._id
+				? chats[0]?.users[1]
+				: chats[0]?.users[0];
 		} catch (error) {
 			console.error(error);
 		}
