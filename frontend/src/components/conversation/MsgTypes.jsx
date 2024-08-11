@@ -1,5 +1,6 @@
 import { Box, Divider, Link, Stack, Typography } from "@mui/material";
 import React from "react";
+import { getUserData } from "../../../local";
 
 const LinkMsg = ({ el }) => {
 	return (
@@ -126,21 +127,22 @@ const TextMsg = ({ el }) => {
 	return (
 		<Stack
 			direction="row"
-			justifyContent={el.incoming ? "start" : "end"}
+			justifyContent={el.sender._id !== getUserData()._id ? "start" : "end"}
 		>
 			<Box
 				p={1.5}
 				sx={{
-					backgroundColor: el.incoming ? "#45a29e" : "#454545",
+					backgroundColor:
+						el.sender._id !== getUserData()._id ? "#45a29e" : "#454545",
 					borderRadius: 1.5,
 					width: "max-content",
 				}}
 			>
 				<Typography
 					variant="body2"
-					color={el.incoming ? "#000" : "#fff"}
+					color={el.sender._id !== getUserData()._id ? "#000" : "#fff"}
 				>
-					{el.message}
+					{el.content}
 				</Typography>
 			</Box>
 		</Stack>

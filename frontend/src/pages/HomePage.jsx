@@ -11,7 +11,7 @@ const HomePage = () => {
 				<div className="hidden h-full lg:inline-block">
 					<SideBar />
 				</div>
-				<div className="w-full backdrop-blur-sm bg-white/5 m-2 rounded-2xl">
+				<div className="w-full over backdrop-blur-sm bg-white/5 m-2 rounded-2xl overflow-hidden">
 					<Outlet />
 				</div>
 			</div>

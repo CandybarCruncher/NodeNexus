@@ -89,7 +89,7 @@ const Header = () => {
 						</StyledBadge>
 					</Box>
 					<Stack spacing={0.2}>
-						<Typography variant="subtitle">{chats.users}</Typography>
+						<Typography variant="subtitle">{faker.name.fullName()}</Typography>
 						<Typography variant="caption">Online</Typography>
 					</Stack>
 				</Stack>
