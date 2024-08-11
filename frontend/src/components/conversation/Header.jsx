@@ -41,7 +41,7 @@ const StyledBadge = styled(Badge)(({ theme }) => ({
 }));
 
 const Header = () => {
-	const [chats, setChats] = useState("");
+	const [chats, setChats] = useState([]);
 	useEffect(() => {
 		fetchChats();
 	}, []);
@@ -55,6 +55,7 @@ const Header = () => {
 			console.error(error);
 		}
 	};
+
 	return (
 		<Box
 			p={2}
@@ -70,31 +71,33 @@ const Header = () => {
 				direction={"row"}
 				justifyContent={"space-between"}
 				sx={{ height: "100%", width: "100%" }}
-				key={chats.id}
 			>
-				<Stack
-					direction={"row"}
-					spacing={2}
-				>
-					<Box>
-						<StyledBadge
-							overlap="circular"
-							anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
-							variant="dot"
+				{chats.map((chat) => {
+					return (
+						<Stack
+							direction={"row"}
+							spacing={2}
+							key={chat._id}
 						>
-							<Avatar
-								alt={faker.name.fullName()}
-								src={faker.image.avatar()}
-							></Avatar>
-						</StyledBadge>
-					</Box>
-					<Stack spacing={0.2}>
-						<Typography variant="subtitle">
-							{/*Extract chat data and match chat name, if it isn't equal to send the display it */}
-						</Typography>
-						<Typography variant="caption">Online</Typography>
-					</Stack>
-				</Stack>
+							<Box>
+								<StyledBadge
+									overlap="circular"
+									anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
+									variant="dot"
+								>
+									<Avatar
+										alt={chat.users[1].name}
+										src={chat.users[0].pic}
+									/>
+								</StyledBadge>
+							</Box>
+							<Stack spacing={0.2}>
+								<Typography variant="subtitle">{chat.users[0].name}</Typography>
+								<Typography variant="caption">Online</Typography>
+							</Stack>
+						</Stack>
+					);
+				})}
 				<Stack
 					direction={"row"}
 					spacing={3}

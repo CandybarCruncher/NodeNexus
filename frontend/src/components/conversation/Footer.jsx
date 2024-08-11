@@ -19,7 +19,7 @@ const StyledInput = styled(TextField)(({ theme }) => ({
 	},
 }));
 
-const Footer = () => {
+const Footer = ({ onMessageSent }) => {
 	const [content, setContent] = useState("");
 	const { chatId } = useParams();
 
@@ -28,6 +28,7 @@ const Footer = () => {
 		const message = { content, chatId };
 		await config.post("/api/msg", message);
 		setContent("");
+		onMessageSent();
 	};
 
 	const handleKeyDown = (e) => {

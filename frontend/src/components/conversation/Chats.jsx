@@ -1,10 +1,15 @@
-import React from "react";
+import React, { useState } from "react";
 import { Box, Stack } from "@mui/material";
 import Header from "./Header";
 import Footer from "./Footer";
 import Conversation from "./Conversation";
 
 const Chats = () => {
+	const [refreshTrigger, setRefreshTrigger] = useState(0);
+
+	const handleMessageSent = () => {
+		setRefreshTrigger((prev) => prev + 1); // Change the state to trigger refresh
+	};
 	return (
 		<Stack
 			maxHeight={"91vh"}
@@ -19,9 +24,9 @@ const Chats = () => {
 					overflowY: "scroll",
 				}}
 			>
-				<Conversation />
+				<Conversation refreshTrigger={refreshTrigger} />
 			</Box>
-			<Footer />
+			<Footer onMessageSent={handleMessageSent} />
 		</Stack>
 	);
 };
