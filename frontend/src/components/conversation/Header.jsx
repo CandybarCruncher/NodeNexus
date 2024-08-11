@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { faker } from "@faker-js/faker";
 import {
 	Avatar,
@@ -10,6 +10,8 @@ import {
 	Typography,
 } from "@mui/material";
 import config from "../../../config";
+import { useParams } from "react-router-dom";
+import { getUserData } from "../../../local";
 
 const StyledBadge = styled(Badge)(({ theme }) => ({
 	"& .MuiBadge-badge": {
@@ -42,15 +44,28 @@ const StyledBadge = styled(Badge)(({ theme }) => ({
 
 const Header = () => {
 	const [chats, setChats] = useState([]);
+	const { chatId } = useParams();
 	useEffect(() => {
 		fetchChats();
-	}, []);
+
+		// console.log(chats[0]);
+		// console.log(chats[0].chatName);
+	}, [chatId]);
 
 	const fetchChats = async () => {
 		try {
-			const { data } = await config.get("/api/cht");
-			console.log(data);
+			const { data } = await config.get(`/api/cht/${chatId}`);
+			// console.log(data);
 			setChats(data);
+		} catch (error) {
+			console.error(error);
+		}
+	};
+	const checkUser = () => {
+		try {
+			return chats[0]?.users[0] == getUserData()._id
+				? chats[0]?.users[0]
+				: chats[0]?.users[1];
 		} catch (error) {
 			console.error(error);
 		}
@@ -72,32 +87,31 @@ const Header = () => {
 				justifyContent={"space-between"}
 				sx={{ height: "100%", width: "100%" }}
 			>
-				{chats.map((chat) => {
-					return (
-						<Stack
-							direction={"row"}
-							spacing={2}
-							key={chat._id}
+				<Stack
+					direction={"row"}
+					spacing={2}
+				>
+					<Box>
+						<StyledBadge
+							overlap="circular"
+							anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
+							variant="dot"
 						>
-							<Box>
-								<StyledBadge
-									overlap="circular"
-									anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
-									variant="dot"
-								>
-									<Avatar
-										alt={chat.users[1].name}
-										src={chat.users[0].pic}
-									/>
-								</StyledBadge>
-							</Box>
-							<Stack spacing={0.2}>
-								<Typography variant="subtitle">{chat.users[0].name}</Typography>
-								<Typography variant="caption">Online</Typography>
-							</Stack>
-						</Stack>
-					);
-				})}
+							<Avatar
+								alt={checkUser()?.name}
+								src={checkUser()?.pic}
+							></Avatar>
+						</StyledBadge>
+					</Box>
+					<Stack spacing={0.2}>
+						<Typography variant="subtitle">
+							{chats[0]?.chatName.localeCompare("sender")
+								? chats[0]?.chatName
+								: checkUser()?.name}
+						</Typography>
+						<Typography variant="caption">Online</Typography>
+					</Stack>
+				</Stack>
 				<Stack
 					direction={"row"}
 					spacing={3}

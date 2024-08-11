@@ -181,6 +181,19 @@ const addToGroup = asyncHandler(async (req, res) => {
 	}
 });
 
+const chatDetails = asyncHandler(async (req, res) => {
+	// console.log(req.body);
+	try {
+		const chatExsists = await chat
+			.find({ _id: req.params.chatId })
+			.populate("users", "-password");
+		res.json(chatExsists);
+	} catch (error) {
+		res.status(400);
+		throw new Error(error);
+	}
+});
+
 module.exports = {
 	accessChat,
 	fetchChats,
@@ -188,4 +201,5 @@ module.exports = {
 	renameGroup,
 	addToGroup,
 	removeFromGroup,
+	chatDetails,
 };

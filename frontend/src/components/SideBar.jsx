@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import ContactCard from "./ContactCard";
 import { Box, Tab, Tabs } from "@mui/material";
 import config from "../../config";
+import { getUserData } from "../../local";
 
 function CustomTabPanel(props) {
 	const { children, value, index, ...other } = props;
@@ -74,20 +75,26 @@ const SideBar = () => {
 							index={0}
 						>
 							<button onClick={() => clickHandler(chat._id)}>
-								<ContactCard chatname={chat.users[1].name} />
+								<ContactCard
+									chatDetails={
+										chat.users[0]._id == getUserData()._id
+											? chat.users[1]
+											: chat.users[0]
+									}
+								/>
 							</button>
 						</CustomTabPanel>
 					)}
-					{chat.isCluster && (
+					{
 						<CustomTabPanel
 							value={value}
 							index={1}
 						>
 							<button onClick={() => clickHandler(chat._id)}>
-								<ContactCard chatname={chat.chatName} />
+								<ContactCard chatDetails={chat} />
 							</button>
 						</CustomTabPanel>
-					)}
+					}
 				</Box>
 			))}
 		</div>
