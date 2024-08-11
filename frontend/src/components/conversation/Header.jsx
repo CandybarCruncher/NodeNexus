@@ -98,8 +98,10 @@ const Header = () => {
 							variant="dot"
 						>
 							<Avatar
-								alt={checkUser()?.name}
-								src={checkUser()?.pic}
+								alt={chats[0]?.chatName || checkUser()?.name}
+								src={
+									(chats[0]?.isCluster && chats[0]?.icon) || checkUser()?.pic
+								}
 							></Avatar>
 						</StyledBadge>
 					</Box>

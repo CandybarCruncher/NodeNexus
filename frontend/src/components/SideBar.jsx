@@ -85,7 +85,7 @@ const SideBar = () => {
 							</button>
 						</CustomTabPanel>
 					)}
-					{
+					{chat.isCluster && (
 						<CustomTabPanel
 							value={value}
 							index={1}
@@ -94,7 +94,7 @@ const SideBar = () => {
 								<ContactCard chatDetails={chat} />
 							</button>
 						</CustomTabPanel>
-					}
+					)}
 				</Box>
 			))}
 		</div>

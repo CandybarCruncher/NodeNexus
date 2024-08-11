@@ -4,12 +4,14 @@ const ContactCard = ({ chatDetails }) => {
 			<div className="flex items-center">
 				<div className="m-2 rounded-full">
 					<img
-						src={chatDetails?.pic}
+						src={chatDetails?.pic || chatDetails?.icon}
 						className="size-[3rem] rounded-full"
 					></img>
 				</div>
 				<div>
-					<strong className="ml-1 text-xl">{chatDetails?.name}</strong>
+					<strong className="ml-1 text-xl">
+						{chatDetails?.name || chatDetails?.chatName}
+					</strong>
 				</div>
 			</div>
 		</>
