@@ -29,8 +29,15 @@ const Footer = () => {
 		await config.post("/api/msg", message);
 		setContent("");
 	};
+
+	const handleKeyDown = (e) => {
+		if (e.key === "Enter" && !e.shiftKey) {
+			submitHandler(e);
+		}
+	};
+
 	return (
-		<FormControl>
+		<FormControl onSubmit={submitHandler}>
 			<Box
 				p={2}
 				sx={{
@@ -64,6 +71,7 @@ const Footer = () => {
 						}}
 						value={content}
 						onChange={(event) => setContent(event.target.value)}
+						onKeyDown={handleKeyDown}
 					/>
 					<Box
 						sx={{

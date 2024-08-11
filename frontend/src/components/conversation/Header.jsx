@@ -89,7 +89,9 @@ const Header = () => {
 						</StyledBadge>
 					</Box>
 					<Stack spacing={0.2}>
-						<Typography variant="subtitle">{faker.name.fullName()}</Typography>
+						<Typography variant="subtitle">
+							{/*Extract chat data and match chat name, if it isn't equal to send the display it */}
+						</Typography>
 						<Typography variant="caption">Online</Typography>
 					</Stack>
 				</Stack>
