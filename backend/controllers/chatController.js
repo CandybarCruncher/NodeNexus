@@ -14,7 +14,7 @@ const accessChat = asyncHandler(async (req, res) => {
 	var isChat = await chat
 		.find({
 			isCluster: false,
-			$or: [
+			$and: [
 				{ users: { $elemMatch: { $eq: req.User._id } } },
 				{ users: { $elemMatch: { $eq: userId } } },
 			],
@@ -32,7 +32,7 @@ const accessChat = asyncHandler(async (req, res) => {
 	} else {
 		var chatData = {
 			chatName: "sender",
-			isGroupChat: false,
+			isCluster: false,
 			users: [req.User._id, userId],
 		};
 	}
@@ -181,6 +181,19 @@ const addToGroup = asyncHandler(async (req, res) => {
 	}
 });
 
+const chatDetails = asyncHandler(async (req, res) => {
+	// console.log(req.body);
+	try {
+		const chatExsists = await chat
+			.find({ _id: req.params.chatId })
+			.populate("users", "-password");
+		res.json(chatExsists);
+	} catch (error) {
+		res.status(400);
+		throw new Error(error);
+	}
+});
+
 module.exports = {
 	accessChat,
 	fetchChats,
@@ -188,4 +201,5 @@ module.exports = {
 	renameGroup,
 	addToGroup,
 	removeFromGroup,
+	chatDetails,
 };

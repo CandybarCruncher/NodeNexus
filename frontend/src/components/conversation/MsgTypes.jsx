@@ -1,5 +1,6 @@
 import { Box, Divider, Link, Stack, Typography } from "@mui/material";
-import React from "react";
+import React, { forwardRef } from "react";
+import { getUserData } from "../../../local";
 
 const LinkMsg = ({ el }) => {
 	return (
@@ -122,30 +123,33 @@ const MediaMsg = ({ el }) => {
 	);
 };
 
-const TextMsg = ({ el }) => {
+const TextMsg = forwardRef(({ msg }, ref) => {
 	return (
 		<Stack
 			direction="row"
-			justifyContent={el.incoming ? "start" : "end"}
+			justifyContent={msg.sender._id !== getUserData()._id ? "start" : "end"}
+			key={msg.sender._id}
+			ref={ref}
 		>
 			<Box
 				p={1.5}
 				sx={{
-					backgroundColor: el.incoming ? "#45a29e" : "#454545",
+					backgroundColor:
+						msg.sender._id !== getUserData()._id ? "#45a29e" : "#454545",
 					borderRadius: 1.5,
 					width: "max-content",
 				}}
 			>
 				<Typography
 					variant="body2"
-					color={el.incoming ? "#000" : "#fff"}
+					color={msg.sender._id !== getUserData()._id ? "#000" : "#fff"}
 				>
-					{el.message}
+					{msg.content}
 				</Typography>
 			</Box>
 		</Stack>
 	);
-};
+});
 
 const TimeLine = ({ el }) => {
 	return (

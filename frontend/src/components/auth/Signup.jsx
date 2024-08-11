@@ -2,6 +2,15 @@ import { useState } from "react";
 import { useNavigate, useOutletContext } from "react-router-dom";
 import SubmitBtn from "../buttons/SubmitBtn";
 import config from "../../../config";
+import { setUserData } from "../../../local";
+import InputField from "../InputField";
+import {
+	FormControl,
+	FormControlLabel,
+	FormLabel,
+	Radio,
+	RadioGroup,
+} from "@mui/material";
 
 const Signup = () => {
 	const { sharedValue } = useOutletContext();
@@ -15,7 +24,9 @@ const Signup = () => {
 	const submitHandler = async (e) => {
 		e.preventDefault();
 		const newUser = { email, name, username, password, gender };
-		await config.post("/api/usr/signup", newUser);
+		const userData = await config.post("/api/usr/signup", newUser);
+		setUserData(userData);
+
 		setName("");
 		setUsername("");
 		setEmail("");
@@ -26,132 +37,104 @@ const Signup = () => {
 
 	return (
 		<>
-			<div className="border-solid border-2 rounded-3xl">
-				<form onSubmit={submitHandler}>
-					<div className="grid justify-items-center">
-						<img
-							src="logo.png"
-							className="h-30 w-25"
-						></img>
-					</div>
-					<div className="m-8">
-						<div className="mb-4">
-							<input
-								name="email"
-								type="text"
-								value={email}
-								className="form-control rounded-xl "
-								placeholder="email@domain.com"
-								onChange={(event) => {
-									setEmail(event.target.value);
-								}}
-								required
-							></input>
-						</div>
-						<div className="flex mb-4">
-							<input
-								name="name"
-								type="text"
-								value={name}
-								className="form-control rounded-xl"
-								placeholder="Full name"
-								onChange={(event) => {
-									setName(event.target.value);
-								}}
-								required
-							></input>
-						</div>
-						<div className="mb-4">
-							<input
-								name="username"
-								type="text"
-								value={username}
-								className="form-control rounded-xl"
-								placeholder="Username"
-								onChange={(event) => {
-									setUsername(event.target.value);
-								}}
-								required
-							></input>
-						</div>
-						<div className="mb-4">
-							<input
-								name="password"
-								type="password"
-								className="form-control rounded-xl"
-								placeholder="Password"
-								onChange={(event) => {
-									setPassword(event.target.value);
-								}}
-								required
-							></input>
-						</div>
-						<label>Gender</label>
-						<div
-							className="flex mb-4"
+			<form onSubmit={submitHandler}>
+				<div className="grid justify-items-center">
+					<img
+						src="logo.png"
+						className="h-30 w-25"
+					></img>
+				</div>
+				<div className="m-8">
+					<div className="mb-4">
+						<InputField
+							name="email"
+							type="text"
+							value={email}
+							className="form-control rounded-xl "
+							placeholder="email@domain.com"
 							onChange={(event) => {
-								setGender(event.target.value);
+								setEmail(event.target.value);
 							}}
-						>
-							<div className="form-check mr-3">
-								<input
-									className="form-check-input"
-									type="radio"
-									name="inlineRadioOptions"
-									id="male"
-									value="male"
-								></input>
-								<label
-									className="form-check-label"
-									htmlFor="male"
-								>
-									Male
-								</label>
-							</div>
-							<div className="form-check mr-3">
-								<input
-									className="form-check-input"
-									type="radio"
-									name="inlineRadioOptions"
-									id="female"
-									value="female"
-								></input>
-								<label
-									className="form-check-label"
-									htmlFor="female"
-								>
-									Female
-								</label>
-							</div>
-							<div className="form-check mr-3">
-								<input
-									className="form-check-input"
-									type="radio"
-									name="inlineRadioOptions"
-									id="other"
-									value="other"
-								></input>
-								<label
-									className="form-check-label"
-									htmlFor="other"
-								>
-									Other
-								</label>
-							</div>
-						</div>
-						<div className="mb-4">
-							<SubmitBtn Placeholder="Commit" />
-						</div>
-						<div className="grid justify-items-center mb-3 text-center">
-							<p>
-								By clicking proceed, you agree to our{" "}
-								<a href="">Terms of service</a> and{" "}
-								<a href="">Privacy Policy</a>
-							</p>
-						</div>
+							required
+						/>
 					</div>
-				</form>
-			</div>
+					<div className="mb-4">
+						<InputField
+							name="name"
+							type="text"
+							value={name}
+							className="form-control rounded-xl"
+							placeholder="Full name"
+							onChange={(event) => {
+								setName(event.target.value);
+							}}
+							required
+						/>
+					</div>
+					<div className="mb-4">
+						<InputField
+							name="username"
+							type="text"
+							value={username}
+							className="form-control rounded-xl"
+							placeholder="Username"
+							onChange={(event) => {
+								setUsername(event.target.value);
+							}}
+							required
+						/>
+					</div>
+					<div className="mb-4">
+						<InputField
+							name="password"
+							type="password"
+							className="form-control rounded-xl"
+							placeholder="Password"
+							onChange={(event) => {
+								setPassword(event.target.value);
+							}}
+							required
+						/>
+					</div>
+					{/* <label>Gender</label> */}
+					<FormLabel id="demo-radio-buttons-group-label">Gender</FormLabel>
+					<RadioGroup
+						aria-labelledby="demo-radio-buttons-group-label"
+						row
+						name="radio-buttons-group"
+						onChange={(event) => {
+							setGender(event.target.value);
+						}}
+					>
+						<FormControlLabel
+							value="male"
+							control={<Radio />}
+							label="Male"
+						/>
+						<FormControlLabel
+							value="female"
+							control={<Radio />}
+							label="Female"
+						/>
+
+						<FormControlLabel
+							value="other"
+							control={<Radio />}
+							label="Other"
+						/>
+					</RadioGroup>
+
+					<div className="mb-4">
+						<SubmitBtn Placeholder="Commit" />
+					</div>
+					<div className="grid justify-items-center mb-3 text-center">
+						<p>
+							By clicking proceed, you agree to our
+							<a href="">Terms of service</a> and <a href="">Privacy Policy</a>
+						</p>
+					</div>
+				</div>
+			</form>
 		</>
 	);
 };

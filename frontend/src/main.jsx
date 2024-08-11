@@ -10,6 +10,33 @@ import HomePage from "./pages/HomePage.jsx";
 import Post from "./components/profile/Post.jsx";
 import UserProfile from "./components/profile/UserProfile.jsx";
 import Chats from "./components/conversation/Chats.jsx";
+import { createTheme, ThemeProvider } from "@mui/material";
+
+const theme = createTheme({
+	palette: {
+		type: "dark",
+		primary: {
+			main: "#40c9c9",
+			dark: "#45a29e",
+			contrastText: "#ffffff",
+		},
+		secondary: {
+			main: "#b30404",
+			dark: "#ff0000",
+			light: "#ff0000",
+		},
+		text: {
+			primary: "#c1c1c1",
+			secondary: "#9a9a9a",
+			disabled: "#7d7d7d",
+		},
+		background: {
+			default: "#0b0c10",
+			paper: "#1f2833",
+		},
+		divider: "rgba(183,183,183,0.2)",
+	},
+});
 
 const router = createBrowserRouter([
 	{
@@ -43,7 +70,7 @@ const router = createBrowserRouter([
 				element: <UserProfile />,
 			},
 			{
-				path: "/chat",
+				path: `/chat/:chatId`,
 				element: <Chats />,
 			},
 		],
@@ -52,6 +79,8 @@ const router = createBrowserRouter([
 
 ReactDOM.createRoot(document.getElementById("root")).render(
 	<React.StrictMode>
-		<RouterProvider router={router} />
+		<ThemeProvider theme={theme}>
+			<RouterProvider router={router} />
+		</ThemeProvider>
 	</React.StrictMode>
 );

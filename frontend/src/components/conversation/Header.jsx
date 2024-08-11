@@ -1,4 +1,4 @@
-import React from "react";
+import { useEffect, useState } from "react";
 import { faker } from "@faker-js/faker";
 import {
 	Avatar,
@@ -9,6 +9,9 @@ import {
 	styled,
 	Typography,
 } from "@mui/material";
+import config from "../../../config";
+import { useParams } from "react-router-dom";
+import { getUserData } from "../../../local";
 
 const StyledBadge = styled(Badge)(({ theme }) => ({
 	"& .MuiBadge-badge": {
@@ -40,6 +43,34 @@ const StyledBadge = styled(Badge)(({ theme }) => ({
 }));
 
 const Header = () => {
+	const [chats, setChats] = useState([]);
+	const { chatId } = useParams();
+	useEffect(() => {
+		fetchChats();
+
+		// console.log(chats[0]);
+		// console.log(chats[0].chatName);
+	}, [chatId]);
+
+	const fetchChats = async () => {
+		try {
+			const { data } = await config.get(`/api/cht/${chatId}`);
+			// console.log(data);
+			setChats(data);
+		} catch (error) {
+			console.error(error);
+		}
+	};
+	const checkUser = () => {
+		try {
+			return chats[0]?.users[0] == getUserData()._id
+				? chats[0]?.users[0]
+				: chats[0]?.users[1];
+		} catch (error) {
+			console.error(error);
+		}
+	};
+
 	return (
 		<Box
 			p={2}
@@ -67,13 +98,17 @@ const Header = () => {
 							variant="dot"
 						>
 							<Avatar
-								alt={faker.name.fullName()}
-								src={faker.image.avatar()}
+								alt={checkUser()?.name}
+								src={checkUser()?.pic}
 							></Avatar>
 						</StyledBadge>
 					</Box>
 					<Stack spacing={0.2}>
-						<Typography variant="subtitle">{faker.name.fullName()}</Typography>
+						<Typography variant="subtitle">
+							{chats[0]?.chatName.localeCompare("sender")
+								? chats[0]?.chatName
+								: checkUser()?.name}
+						</Typography>
 						<Typography variant="caption">Online</Typography>
 					</Stack>
 				</Stack>
