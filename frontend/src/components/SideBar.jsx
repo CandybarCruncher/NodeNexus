@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import ContactCard from "./ContactCard";
-import { Box, Tab, Tabs } from "@mui/material";
+import { Box, Skeleton, Stack, Tab, Tabs } from "@mui/material";
 import config from "../../config";
 import { getUserData } from "../../local";
 
@@ -25,6 +25,7 @@ const SideBar = () => {
 	const navigate = useNavigate();
 	const [chats, setChats] = useState([]);
 	const [value, setValue] = useState(0);
+	const [loading, setLoading] = useState(true);
 
 	const clickHandler = (chatId) => {
 		navigate(`/chat/${chatId}`);
@@ -35,6 +36,7 @@ const SideBar = () => {
 	};
 
 	useEffect(() => {
+		setLoading(true);
 		fetchChats();
 	}, [value]);
 
@@ -43,6 +45,7 @@ const SideBar = () => {
 			const { data } = await config.get("/api/cht");
 			console.log(data);
 			setChats(data);
+			setLoading(false);
 		} catch (error) {
 			console.error(error);
 		}
@@ -66,37 +69,63 @@ const SideBar = () => {
 					<Tab label="Clusters" />
 				</Tabs>
 			</Box>
-
-			{chats.map((chat) => (
-				<Box key={chat._id}>
-					{!chat.isCluster && (
-						<CustomTabPanel
-							value={value}
-							index={0}
+			{loading
+				? Array.from(new Array(10)).map((_) => (
+						<Box
+							key={_}
+							sx={{
+								m: 2,
+							}}
 						>
-							<button onClick={() => clickHandler(chat._id)}>
-								<ContactCard
-									chatDetails={
-										chat.users[0]._id == getUserData()._id
-											? chat.users[1]
-											: chat.users[0]
-									}
+							<Stack
+								direction="row"
+								spacing={2}
+								sx={{ alignItems: "center" }}
+							>
+								<Skeleton
+									variant="circular"
+									height={55}
+									width={55}
 								/>
-							</button>
-						</CustomTabPanel>
-					)}
-					{chat.isCluster && (
-						<CustomTabPanel
-							value={value}
-							index={1}
-						>
-							<button onClick={() => clickHandler(chat._id)}>
-								<ContactCard chatDetails={chat} />
-							</button>
-						</CustomTabPanel>
-					)}
-				</Box>
-			))}
+								<Skeleton
+									variant="rectangular"
+									height={50}
+									width={250}
+									sx={{ borderRadius: 5 }}
+								/>
+							</Stack>
+						</Box>
+				  ))
+				: chats.map((chat) => (
+						<Box key={chat._id}>
+							{!chat.isCluster && (
+								<CustomTabPanel
+									value={value}
+									index={0}
+								>
+									<button onClick={() => clickHandler(chat._id)}>
+										<ContactCard
+											chatDetails={
+												chat.users[0]._id == getUserData()._id
+													? chat.users[1]
+													: chat.users[0]
+											}
+										/>
+									</button>
+								</CustomTabPanel>
+							)}
+							{chat.isCluster && (
+								<CustomTabPanel
+									value={value}
+									index={1}
+								>
+									<button onClick={() => clickHandler(chat._id)}>
+										<ContactCard chatDetails={chat} />
+									</button>
+								</CustomTabPanel>
+							)}
+						</Box>
+				  ))}
 		</div>
 	);
 };

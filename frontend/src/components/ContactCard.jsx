@@ -9,7 +9,7 @@ const ContactCard = ({ chatDetails }) => {
 					></img>
 				</div>
 				<div>
-					<strong className="ml-1 text-xl">
+					<strong className="ml-5 text-xl">
 						{chatDetails?.name || chatDetails?.chatName}
 					</strong>
 				</div>
