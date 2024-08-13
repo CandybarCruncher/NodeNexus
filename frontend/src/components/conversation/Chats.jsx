@@ -3,8 +3,11 @@ import { Box, Stack } from "@mui/material";
 import Header from "./Header";
 import Footer from "./Footer";
 import Conversation from "./Conversation";
+import { useOutletContext } from "react-router-dom";
 
 const Chats = () => {
+	const { toggleMenu } = useOutletContext();
+
 	const [refreshTrigger, setRefreshTrigger] = useState(0);
 
 	const handleMessageSent = () => {
@@ -24,9 +27,15 @@ const Chats = () => {
 					overflowY: "scroll",
 				}}
 			>
-				<Conversation refreshTrigger={refreshTrigger} />
+				<Conversation
+					toggleMenu={toggleMenu}
+					refreshTrigger={refreshTrigger}
+				/>
 			</Box>
-			<Footer onMessageSent={handleMessageSent} />
+			<Footer
+				toggleMenu={toggleMenu}
+				onMessageSent={handleMessageSent}
+			/>
 		</Stack>
 	);
 };

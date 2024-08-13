@@ -1,22 +1,28 @@
 import React, { useState } from "react";
 import SideBar from "./SideBar";
 
-const NavBar = () => {
-	const [isMenuOpen, setIsMenuOpen] = useState(false);
-	const [isSideBarOpen, setIsSideBarOpen] = useState(false);
+const NavBar = ({
+	toggleMenu,
+	openSideBar,
+	closeSideBar,
+	isSideBarOpen,
+	isMenuOpen,
+}) => {
+	// const [isMenuOpen, setIsMenuOpen] = useState(false);
+	// const [isSideBarOpen, setIsSideBarOpen] = useState(false);
 
-	const toggleMenu = () => {
-		setIsMenuOpen(!isMenuOpen);
-	};
+	// const toggleMenu = () => {
+	// 	setIsMenuOpen(!isMenuOpen);
+	// };
 
-	const openSideBar = () => {
-		setIsSideBarOpen(true);
-		setIsMenuOpen(false);
-	};
+	// const openSideBar = () => {
+	// 	setIsSideBarOpen(true);
+	// 	setIsMenuOpen(false);
+	// };
 
-	const closeSideBar = () => {
-		setIsSideBarOpen(false);
-	};
+	// const closeSideBar = () => {
+	// 	setIsSideBarOpen(false);
+	// };
 
 	return (
 		<>
@@ -88,46 +94,51 @@ const NavBar = () => {
 				</div>
 
 				{isMenuOpen && (
-					<div className="lg:hidden">
-						<div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
-							<form className="flex sm:hidden px-3 py-2">
-								<input
-									className="form-control rounded-full bg-[#1f2833]"
-									type="search"
-									placeholder="&#128269; Search"
-									aria-label="Search"
-								/>
-							</form>
-							<a
-								href="/home"
-								className="lg:hidden block px-3 py-2 rounded-md text-center font-medium text-[#45a29e] hover:text-white hover:bg-[#45a29e]"
-							>
-								Home
-							</a>
-							<a
-								href="/search"
-								className="block px-3 py-2 rounded-md text-center font-medium text-[#45a29e] hover:text-white hover:bg-[#45a29e]"
-							>
-								Search
-							</a>
-							<a
-								href="/notifications"
-								className="md:hidden block px-3 py-2 rounded-md text-center font-medium text-[#45a29e] hover:text-white hover:bg-[#45a29e]"
-							>
-								Notifications
-							</a>
-							<a
-								href="/user"
-								className="md:hidden block px-3 py-2 rounded-md text-center font-medium text-[#45a29e] hover:text-white hover:bg-[#45a29e]"
-							>
-								User
-							</a>
-							<a
-								onClick={openSideBar}
-								className="block px-3 py-2 rounded-md text-center font-medium text-[#45a29e] hover:text-white hover:bg-[#45a29e]"
-							>
-								Chats
-							</a>
+					<div className="">
+						<div
+							className="lg:hidden absolute bg-black w-full "
+							onClick={toggleMenu}
+						>
+							<div className="px-2 pt-2 pb-3 space-y-1 sm:px-3 ">
+								<form className="flex sm:hidden px-3 py-2">
+									<input
+										className="form-control rounded-full bg-[#1f2833]"
+										type="search"
+										placeholder="&#128269; Search"
+										aria-label="Search"
+									/>
+								</form>
+								<a
+									href="/home"
+									className="lg:hidden block px-3 py-2 rounded-md text-center font-medium text-[#45a29e] hover:text-white hover:bg-[#45a29e]"
+								>
+									Home
+								</a>
+								<a
+									href="/search"
+									className="block px-3 py-2 rounded-md text-center font-medium text-[#45a29e] hover:text-white hover:bg-[#45a29e]"
+								>
+									Search
+								</a>
+								<a
+									href="/notifications"
+									className="md:hidden block px-3 py-2 rounded-md text-center font-medium text-[#45a29e] hover:text-white hover:bg-[#45a29e]"
+								>
+									Notifications
+								</a>
+								<a
+									href="/user"
+									className="md:hidden block px-3 py-2 rounded-md text-center font-medium text-[#45a29e] hover:text-white hover:bg-[#45a29e]"
+								>
+									User
+								</a>
+								<a
+									onClick={openSideBar}
+									className="block px-3 py-2 rounded-md text-center font-medium text-[#45a29e] hover:text-white hover:bg-[#45a29e]"
+								>
+									Chats
+								</a>
+							</div>
 						</div>
 					</div>
 				)}
@@ -152,7 +163,7 @@ const NavBar = () => {
 								<path d="M6 18L18 6M6 6l12 12" />
 							</svg>
 						</button>
-						<SideBar />
+						<SideBar closeSideBar={closeSideBar} />
 					</div>
 				</div>
 			)}

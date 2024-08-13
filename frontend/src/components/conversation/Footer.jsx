@@ -19,7 +19,7 @@ const StyledInput = styled(TextField)(({ theme }) => ({
 	},
 }));
 
-const Footer = ({ onMessageSent }) => {
+const Footer = ({ onMessageSent, toggleMenu }) => {
 	const [content, setContent] = useState("");
 	const { chatId } = useParams();
 
@@ -38,7 +38,10 @@ const Footer = ({ onMessageSent }) => {
 	};
 
 	return (
-		<FormControl onSubmit={submitHandler}>
+		<FormControl
+			onSubmit={submitHandler}
+			onClick={toggleMenu}
+		>
 			<Box
 				p={2}
 				sx={{

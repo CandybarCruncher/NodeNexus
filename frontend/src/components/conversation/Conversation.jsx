@@ -4,7 +4,7 @@ import { LinkMsg, MediaMsg, ReplyMsg, TextMsg, TimeLine } from "./MsgTypes";
 import config from "../../../config";
 import { useParams } from "react-router-dom";
 
-const Conversation = ({ refreshTrigger }) => {
+const Conversation = ({ refreshTrigger, toggleMenu }) => {
 	const [chats, setChats] = useState([]);
 	const { chatId } = useParams();
 	const lastMessageRef = useRef(null);
@@ -34,7 +34,10 @@ const Conversation = ({ refreshTrigger }) => {
 	};
 
 	return (
-		<Box p={3}>
+		<Box
+			p={3}
+			onClick={toggleMenu}
+		>
 			<Stack spacing={3}>
 				{loading
 					? Array.from(new Array(10)).map((_, i) => (

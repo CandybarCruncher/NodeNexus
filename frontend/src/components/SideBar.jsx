@@ -21,7 +21,7 @@ function CustomTabPanel(props) {
 	);
 }
 
-const SideBar = () => {
+const SideBar = ({ closeSideBar }) => {
 	const navigate = useNavigate();
 	const [chats, setChats] = useState([]);
 	const [value, setValue] = useState(0);
@@ -103,7 +103,12 @@ const SideBar = () => {
 									value={value}
 									index={0}
 								>
-									<button onClick={() => clickHandler(chat._id)}>
+									<button
+										onClick={() => {
+											clickHandler(chat._id);
+											closeSideBar();
+										}}
+									>
 										<ContactCard
 											chatDetails={
 												chat.users[0]._id == getUserData()._id
@@ -119,7 +124,12 @@ const SideBar = () => {
 									value={value}
 									index={1}
 								>
-									<button onClick={() => clickHandler(chat._id)}>
+									<button
+										onClick={() => {
+											clickHandler(chat._id);
+											closeSideBar();
+										}}
+									>
 										<ContactCard chatDetails={chat} />
 									</button>
 								</CustomTabPanel>
