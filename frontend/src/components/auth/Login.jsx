@@ -1,5 +1,4 @@
 import { useState } from "react";
-
 import { useNavigate, useOutletContext } from "react-router-dom";
 import config from "../../../config";
 import SubmitBtn from "../buttons/SubmitBtn";
@@ -24,13 +23,13 @@ const Login = () => {
 
 	return (
 		<>
+			<div className="grid justify-items-center">
+				<img
+					src="logo.png"
+					className="h-30 w-25 mt-[-13%]"
+				></img>
+			</div>
 			<form onSubmit={submitHandler}>
-				<div className="grid justify-items-center">
-					<img
-						src="logo.png"
-						className="h-30 w-25"
-					></img>
-				</div>
 				<div className="m-8">
 					<div
 						className="mb-4 text-center drop-shadow-xl text-xl"
@@ -60,7 +59,7 @@ const Login = () => {
 							onChange={(event) => setPassword(event.target.value)}
 						/>
 					</div>
-					<div className="">
+					<div className="sm:flex">
 						<div className="mt-2">
 							<input
 								type="checkbox"
@@ -68,12 +67,12 @@ const Login = () => {
 							></input>
 							<label
 								htmlFor="remember"
-								className="ml-2"
+								className="ml-2 mr-40"
 							>
 								Remember me
 							</label>
 						</div>
-						<div>
+						<div className="mt-2">
 							<a href="">forgot your Password?</a>
 						</div>
 					</div>

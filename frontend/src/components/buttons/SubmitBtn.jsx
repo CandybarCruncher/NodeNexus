@@ -1,11 +1,19 @@
-import { Placeholder } from "phosphor-react";
-import React from "react";
+import { Button } from "@mui/material";
 
 const SubmitBtn = ({ Placeholder }) => {
 	return (
-		<button className="btn bg-[#45a29e] rounded-full size-full">
+		<Button
+			type="submit"
+			variant="contained"
+			sx={{
+				width: "100%",
+				borderRadius: 4,
+				color: "black",
+				fontWeight: "bolder",
+			}}
+		>
 			{Placeholder}
-		</button>
+		</Button>
 	);
 };
 

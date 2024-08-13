@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Outlet } from "react-router-dom";
 import "../CSS/landingPage.css";
 import BackgroundVideo from "../components/BackgroundVideo";
@@ -9,7 +9,7 @@ const LandingPage = () => {
 		<>
 			<div className="test">
 				<BackgroundVideo />
-				<div className="backdrop-blur-sm bg-white/5 rounded-3xl">
+				<div className=" backdrop-blur-sm bg-white/5 rounded-3xl ">
 					<Outlet context={{ sharedValue, setSharedValue }} />
 				</div>
 			</div>

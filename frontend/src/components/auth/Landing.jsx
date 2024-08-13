@@ -25,13 +25,13 @@ const Landing = () => {
 
 	return (
 		<>
+			<div className="grid justify-items-center ">
+				<img
+					src="logo.png"
+					className="h-30 w-25 mt-[-13%]"
+				></img>
+			</div>
 			<form onSubmit={submitHandler}>
-				<div className="grid justify-items-center">
-					<img
-						src="logo.png"
-						className="h-30 w-25"
-					></img>
-				</div>
 				<div className="m-8">
 					<div className="mb-4">
 						<InputField

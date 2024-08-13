@@ -4,13 +4,7 @@ import SubmitBtn from "../buttons/SubmitBtn";
 import config from "../../../config";
 import { setUserData } from "../../../local";
 import InputField from "../InputField";
-import {
-	FormControl,
-	FormControlLabel,
-	FormLabel,
-	Radio,
-	RadioGroup,
-} from "@mui/material";
+import { FormControlLabel, FormLabel, Radio, RadioGroup } from "@mui/material";
 
 const Signup = () => {
 	const { sharedValue } = useOutletContext();
@@ -37,13 +31,13 @@ const Signup = () => {
 
 	return (
 		<>
+			<div className="grid justify-items-center">
+				<img
+					src="logo.png"
+					className="h-30 w-25 mt-[-13%]"
+				></img>
+			</div>
 			<form onSubmit={submitHandler}>
-				<div className="grid justify-items-center">
-					<img
-						src="logo.png"
-						className="h-30 w-25"
-					></img>
-				</div>
 				<div className="m-8">
 					<div className="mb-4">
 						<InputField
@@ -124,7 +118,7 @@ const Signup = () => {
 						/>
 					</RadioGroup>
 
-					<div className="mb-4">
+					<div className="my-3">
 						<SubmitBtn Placeholder="Commit" />
 					</div>
 					<div className="grid justify-items-center mb-3 text-center">
