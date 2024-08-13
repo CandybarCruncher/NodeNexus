@@ -11,6 +11,9 @@ const HomePage = () => {
 		setIsMenuOpen(!isMenuOpen);
 	};
 
+	const closeMenu = () => {
+		setIsMenuOpen(false);
+	};
 	const openSideBar = () => {
 		setIsSideBarOpen(true);
 		setIsMenuOpen(false);
@@ -33,7 +36,7 @@ const HomePage = () => {
 					<SideBar />
 				</div>
 				<div className="w-full over backdrop-blur-sm bg-white/5 m-2 rounded-2xl overflow-hidden">
-					<Outlet context={{ toggleMenu }} />
+					<Outlet context={{ closeMenu }} />
 				</div>
 			</div>
 		</>

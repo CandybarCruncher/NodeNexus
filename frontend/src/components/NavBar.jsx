@@ -96,10 +96,10 @@ const NavBar = ({
 				{isMenuOpen && (
 					<div className="">
 						<div
-							className="lg:hidden absolute bg-black w-full "
+							className="lg:hidden absolute bg-black w-full rounded-xl"
 							onClick={toggleMenu}
 						>
-							<div className="px-2 pt-2 pb-3 space-y-1 sm:px-3 ">
+							<div className="px-2 pb-2 space-y-1 sm:px-3 ">
 								<form className="flex sm:hidden px-3 py-2">
 									<input
 										className="form-control rounded-full bg-[#1f2833]"

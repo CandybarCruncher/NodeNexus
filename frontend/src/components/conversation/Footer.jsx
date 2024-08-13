@@ -2,14 +2,14 @@ import {
 	Box,
 	FormControl,
 	IconButton,
-	InputAdornment,
 	Stack,
 	styled,
 	TextField,
 } from "@mui/material";
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import config from "../../../config";
 import { useParams } from "react-router-dom";
+import { Chatlog } from "../conversation/Chats";
 
 const StyledInput = styled(TextField)(({ theme }) => ({
 	"& .MuiInputBase-input": {
@@ -19,16 +19,21 @@ const StyledInput = styled(TextField)(({ theme }) => ({
 	},
 }));
 
-const Footer = ({ onMessageSent, toggleMenu }) => {
+const Footer = ({ socket, closeMenu }) => {
+	const [chatlog, setChatlog] = useContext(Chatlog);
+	//chatlog is not being used but removing it breaks the submitHandler
+
 	const [content, setContent] = useState("");
 	const { chatId } = useParams();
 
 	const submitHandler = async (e) => {
 		e.preventDefault();
+		if (!content) return;
 		const message = { content, chatId };
-		await config.post("/api/msg", message);
+		const { data } = await config.post("/api/msg", message);
+		setChatlog((prevChatlog) => [...prevChatlog, data]);
+		socket.emit("new message", data);
 		setContent("");
-		onMessageSent();
 	};
 
 	const handleKeyDown = (e) => {
@@ -40,7 +45,7 @@ const Footer = ({ onMessageSent, toggleMenu }) => {
 	return (
 		<FormControl
 			onSubmit={submitHandler}
-			onClick={toggleMenu}
+			onClick={closeMenu}
 		>
 			<Box
 				p={2}

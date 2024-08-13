@@ -1,42 +1,65 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Box, Stack } from "@mui/material";
 import Header from "./Header";
 import Footer from "./Footer";
 import Conversation from "./Conversation";
 import { useOutletContext } from "react-router-dom";
 
+import { getUserData } from "../../../local";
+import { useParams } from "react-router-dom";
+export const Chatlog = React.createContext();
+
+const ENDPOINT = "http://localhost:6969";
+import io from "socket.io-client";
+const socket = io(ENDPOINT);
+
 const Chats = () => {
-	const { toggleMenu } = useOutletContext();
+	const { closeMenu } = useOutletContext();
 
-	const [refreshTrigger, setRefreshTrigger] = useState(0);
+	const [chatlog, setChatlog] = useState([]);
+	const { chatId } = useParams();
 
-	const handleMessageSent = () => {
-		setRefreshTrigger((prev) => prev + 1); // Change the state to trigger refresh
-	};
+	const [socketConnected, setSocketConnected] = useState(false);
+
+	//initiating connection
+	useEffect(() => {
+		socket.emit("setup", getUserData());
+		socket.on("connection", () => setSocketConnected(true));
+	}, []);
+
+	//join selected chat room
+	useEffect(() => {
+		socket?.emit("join chat", chatId);
+	}, [chatId]);
+
 	return (
-		<Stack
-			maxHeight={"91vh"}
-			width={"auto"}
-		>
-			<Header />
-			<Box
-				width={"100%"}
-				sx={{
-					flexGrow: 1,
-					backgroundColor: "#0B0C10",
-					overflowY: "scroll",
-				}}
+		<Chatlog.Provider value={[chatlog, setChatlog]}>
+			<Stack
+				maxHeight={"91vh"}
+				width={"auto"}
 			>
-				<Conversation
-					toggleMenu={toggleMenu}
-					refreshTrigger={refreshTrigger}
+				<Header
+				// refreshTrigger={refreshTrigger} react online green dot
 				/>
-			</Box>
-			<Footer
-				toggleMenu={toggleMenu}
-				onMessageSent={handleMessageSent}
-			/>
-		</Stack>
+				<Box
+					width={"100%"}
+					sx={{
+						flexGrow: 1,
+						backgroundColor: "#0B0C10",
+						overflowY: "auto",
+					}}
+				>
+					<Conversation
+						closeMenu={closeMenu}
+						socket={socket}
+					/>
+				</Box>
+				<Footer
+					closeMenu={closeMenu}
+					socket={socket}
+				/>
+			</Stack>
+		</Chatlog.Provider>
 	);
 };
 

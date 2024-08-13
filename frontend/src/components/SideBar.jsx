@@ -43,7 +43,7 @@ const SideBar = ({ closeSideBar }) => {
 	const fetchChats = async () => {
 		try {
 			const { data } = await config.get("/api/cht");
-			console.log(data);
+			// console.log(data);
 			setChats(data);
 			setLoading(false);
 		} catch (error) {
@@ -70,9 +70,9 @@ const SideBar = ({ closeSideBar }) => {
 				</Tabs>
 			</Box>
 			{loading
-				? Array.from(new Array(10)).map((_) => (
+				? Array.from(new Array(10)).map((_, i) => (
 						<Box
-							key={_}
+							key={i}
 							sx={{
 								m: 2,
 							}}
