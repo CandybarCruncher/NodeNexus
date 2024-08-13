@@ -5,6 +5,7 @@ import config from "../../../config";
 import { setUserData } from "../../../local";
 import InputField from "../InputField";
 import { FormControlLabel, FormLabel, Radio, RadioGroup } from "@mui/material";
+import axios from "axios";
 
 const Signup = () => {
 	const { sharedValue } = useOutletContext();
@@ -13,11 +14,40 @@ const Signup = () => {
 	const [username, setUsername] = useState("");
 	const [password, setPassword] = useState("");
 	const [gender, setGender] = useState("");
+	const [pic, setPic] = useState(null);
+
 	const navigate = useNavigate();
+
+	const uploadImage = async () => {
+		const formData = new FormData();
+		formData.append("file", pic);
+		formData.append("upload_preset", "NodeNexus");
+
+		const response = await axios.post(
+			"https://api.cloudinary.com/v1_1/dwkgrubve/image/upload",
+			formData
+		);
+
+		return response.data.secure_url;
+	};
 
 	const submitHandler = async (e) => {
 		e.preventDefault();
-		const newUser = { email, name, username, password, gender };
+		let uploadedImageUrl = "";
+
+		if (pic) {
+			uploadedImageUrl = await uploadImage();
+		}
+
+		const newUser = {
+			email,
+			name,
+			username,
+			password,
+			gender,
+			pic: uploadedImageUrl,
+		};
+
 		const userData = await config.post("/api/usr/signup", newUser);
 		setUserData(userData);
 
@@ -26,6 +56,8 @@ const Signup = () => {
 		setEmail("");
 		setPassword("");
 		setGender("");
+		setPic(null);
+
 		navigate("/home");
 	};
 
@@ -82,6 +114,7 @@ const Signup = () => {
 						<InputField
 							name="password"
 							type="password"
+							value={password}
 							className="form-control rounded-xl"
 							placeholder="Password"
 							onChange={(event) => {
@@ -90,7 +123,19 @@ const Signup = () => {
 							required
 						/>
 					</div>
-					{/* <label>Gender</label> */}
+					<div className="mb-4">
+						<label
+							htmlFor="file-upload"
+							className="custom-file-upload"
+						>
+							Upload picture
+						</label>
+						<InputField
+							name="pic"
+							type="file"
+							onChange={(event) => setPic(event.target.files[0])}
+						/>
+					</div>
 					<FormLabel id="demo-radio-buttons-group-label">Gender</FormLabel>
 					<RadioGroup
 						aria-labelledby="demo-radio-buttons-group-label"
@@ -99,6 +144,7 @@ const Signup = () => {
 						onChange={(event) => {
 							setGender(event.target.value);
 						}}
+						required
 					>
 						<FormControlLabel
 							value="male"
@@ -110,7 +156,6 @@ const Signup = () => {
 							control={<Radio />}
 							label="Female"
 						/>
-
 						<FormControlLabel
 							value="other"
 							control={<Radio />}

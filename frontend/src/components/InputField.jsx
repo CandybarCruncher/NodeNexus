@@ -8,6 +8,7 @@ const InputField = ({
 	className,
 	placeholder,
 	onChange,
+	required,
 }) => {
 	return (
 		<Box
@@ -25,8 +26,8 @@ const InputField = ({
 					name={name}
 					type={type}
 					value={value}
-					required
 					onChange={onChange}
+					required={required}
 				/>
 			</div>
 		</Box>
