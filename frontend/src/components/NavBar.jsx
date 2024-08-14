@@ -1,5 +1,6 @@
-import React, { useState } from "react";
+import React from "react";
 import SideBar from "./SideBar";
+import { clearUserData } from "../../local";
 
 const NavBar = ({
 	toggleMenu,
@@ -8,21 +9,10 @@ const NavBar = ({
 	isSideBarOpen,
 	isMenuOpen,
 }) => {
-	// const [isMenuOpen, setIsMenuOpen] = useState(false);
-	// const [isSideBarOpen, setIsSideBarOpen] = useState(false);
-
-	// const toggleMenu = () => {
-	// 	setIsMenuOpen(!isMenuOpen);
-	// };
-
-	// const openSideBar = () => {
-	// 	setIsSideBarOpen(true);
-	// 	setIsMenuOpen(false);
-	// };
-
-	// const closeSideBar = () => {
-	// 	setIsSideBarOpen(false);
-	// };
+	const handleLogout = () => {
+		// clearUserData();
+		navigate("/");
+	};
 
 	return (
 		<>
@@ -55,7 +45,7 @@ const NavBar = ({
 								className="ml-2"
 							>
 								<img
-									src="logo.png"
+									src="../../public/logo.png"
 									alt="Logo"
 									className="h-12 w-12"
 								/>
@@ -85,6 +75,16 @@ const NavBar = ({
 									<img
 										src="https://img.icons8.com/?size=100&id=7819&format=png&color=45A29E"
 										alt="User Icon"
+										className="h-10 w-10"
+									/>
+								</a>
+								<a
+									href="/"
+									onClick={handleLogout}
+								>
+									<img
+										src="https://img.icons8.com/?size=100&id=26217&format=png&color=45A29E"
+										alt="Log out Icon"
 										className="h-10 w-10"
 									/>
 								</a>
@@ -137,6 +137,13 @@ const NavBar = ({
 									className="block px-3 py-2 rounded-md text-center font-medium text-[#45a29e] hover:text-white hover:bg-[#45a29e]"
 								>
 									Chats
+								</a>
+								<a
+									href="/"
+									onClick={handleLogout}
+									className="md:hidden block px-3 py-2 rounded-md text-center font-medium text-[#45a29e] hover:text-white hover:bg-[#45a29e]"
+								>
+									Log out
 								</a>
 							</div>
 						</div>

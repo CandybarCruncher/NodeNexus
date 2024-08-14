@@ -52,11 +52,12 @@ const SideBar = ({ closeSideBar }) => {
 	};
 
 	return (
-		<div className="flex flex-col h-[calc(100vh-80px)] overflow-hidden backdrop-blur-sm bg-white/5 relative p-3 m-2 rounded-2xl lg:w-[25rem] ">
+		<div className="flex flex-col h-[calc(100vh-85px)] overflow-hidden bg-[#1f2833] relative p-3 m-2 rounded-2xl lg:w-[25rem] ">
 			<Box
 				sx={{
 					borderBottom: 1,
 					borderColor: "divider",
+					marginBottom: 1,
 				}}
 			>
 				<Tabs
@@ -65,8 +66,14 @@ const SideBar = ({ closeSideBar }) => {
 					onChange={handleChange}
 					aria-label="basic tabs example"
 				>
-					<Tab label="Nodes" />
-					<Tab label="Clusters" />
+					<Tab
+						label="Nodes"
+						sx={{ width: "50%" }}
+					/>
+					<Tab
+						label="Clusters"
+						sx={{ width: "50%" }}
+					/>
 				</Tabs>
 			</Box>
 			{loading
@@ -97,26 +104,32 @@ const SideBar = ({ closeSideBar }) => {
 						</Box>
 				  ))
 				: chats.map((chat) => (
-						<Box key={chat._id}>
+						<Box
+							key={chat._id}
+							sx={{
+								":hover": {
+									bgcolor: "#45a29e",
+									borderRadius: "20px",
+									cursor: "pointer",
+								},
+							}}
+							onClick={() => {
+								clickHandler(chat._id);
+								closeSideBar;
+							}}
+						>
 							{!chat.isCluster && (
 								<CustomTabPanel
 									value={value}
 									index={0}
 								>
-									<button
-										onClick={() => {
-											clickHandler(chat._id);
-											closeSideBar();
-										}}
-									>
-										<ContactCard
-											chatDetails={
-												chat.users[0]._id == getUserData()._id
-													? chat.users[1]
-													: chat.users[0]
-											}
-										/>
-									</button>
+									<ContactCard
+										chatDetails={
+											chat.users[0]._id == getUserData()._id
+												? chat.users[1]
+												: chat.users[0]
+										}
+									/>
 								</CustomTabPanel>
 							)}
 							{chat.isCluster && (
@@ -124,14 +137,7 @@ const SideBar = ({ closeSideBar }) => {
 									value={value}
 									index={1}
 								>
-									<button
-										onClick={() => {
-											clickHandler(chat._id);
-											closeSideBar();
-										}}
-									>
-										<ContactCard chatDetails={chat} />
-									</button>
+									<ContactCard chatDetails={chat} />
 								</CustomTabPanel>
 							)}
 						</Box>
