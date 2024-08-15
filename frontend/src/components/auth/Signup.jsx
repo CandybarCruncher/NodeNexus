@@ -1,11 +1,18 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate, useOutletContext } from "react-router-dom";
 import SubmitBtn from "../buttons/SubmitBtn";
 import config from "../../../config";
 import { setUserData } from "../../../local";
 import InputField from "../InputField";
-import { FormControlLabel, FormLabel, Radio, RadioGroup } from "@mui/material";
-import axios from "axios";
+import {
+	FormControlLabel,
+	FormLabel,
+	Radio,
+	RadioGroup,
+	Box,
+	CircularProgress,
+	Stack,
+} from "@mui/material";
 
 const Signup = () => {
 	const { sharedValue } = useOutletContext();
@@ -15,29 +22,36 @@ const Signup = () => {
 	const [password, setPassword] = useState("");
 	const [gender, setGender] = useState("");
 	const [pic, setPic] = useState(null);
+	const [loading, setLoading] = useState(false);
 
 	const navigate = useNavigate();
+	useEffect(() => {
+		console.log("success__" + pic);
+	}, [pic]);
 
-	const uploadImage = async () => {
+	const uploadImage = async (pic) => {
+		setLoading(true);
 		const formData = new FormData();
 		formData.append("file", pic);
 		formData.append("upload_preset", "NodeNexus");
 
-		const response = await axios.post(
+		const response = await config.post(
 			"https://api.cloudinary.com/v1_1/dwkgrubve/image/upload",
-			formData
+			formData,
+			{
+				baseURL: "",
+				headers: {
+					"Content-Type": "multipart/form-data",
+				},
+			}
 		);
 
+		setLoading(false); // Hide loading indicator after upload
 		return response.data.secure_url;
 	};
 
 	const submitHandler = async (e) => {
 		e.preventDefault();
-		let uploadedImageUrl = "";
-
-		if (pic) {
-			uploadedImageUrl = await uploadImage();
-		}
 
 		const newUser = {
 			email,
@@ -45,7 +59,7 @@ const Signup = () => {
 			username,
 			password,
 			gender,
-			pic: uploadedImageUrl,
+			pic: pic,
 		};
 
 		const userData = await config.post("/api/usr/signup", newUser);
@@ -64,10 +78,12 @@ const Signup = () => {
 	return (
 		<>
 			<div className="grid justify-items-center">
-				<img
-					src="logo.png"
+				<a
+					href="/"
 					className="h-30 w-25 mt-[-13%]"
-				></img>
+				>
+					<img src="/logo.png" />
+				</a>
 			</div>
 			<form onSubmit={submitHandler}>
 				<div className="m-8">
@@ -76,7 +92,7 @@ const Signup = () => {
 							name="email"
 							type="text"
 							value={email}
-							className="form-control rounded-xl "
+							className="form-control rounded-xl"
 							placeholder="email@domain.com"
 							onChange={(event) => {
 								setEmail(event.target.value);
@@ -123,19 +139,38 @@ const Signup = () => {
 							required
 						/>
 					</div>
-					<div className="mb-4">
-						<label
-							htmlFor="file-upload"
-							className="custom-file-upload"
+					<Stack
+						direction="row"
+						alignItems="center"
+					>
+						<Box
+							className="mb-4"
+							sx={{ flexGrow: 1 }}
 						>
-							Upload picture
-						</label>
-						<InputField
-							name="pic"
-							type="file"
-							onChange={(event) => setPic(event.target.files[0])}
-						/>
-					</div>
+							<label
+								htmlFor="file-upload"
+								className="custom-file-upload"
+								style={{ marginRight: "10px" }}
+							>
+								Upload picture
+							</label>
+							<InputField
+								name="pic"
+								type="file"
+								onChange={async (event) => {
+									const selectedFile = event.target.files[0];
+									setPic(selectedFile);
+									setPic(await uploadImage(selectedFile));
+								}}
+							/>
+						</Box>
+						{loading && (
+							<Box sx={{ marginLeft: "15px" }}>
+								<CircularProgress />
+							</Box>
+						)}
+					</Stack>
+
 					<FormLabel id="demo-radio-buttons-group-label">Gender</FormLabel>
 					<RadioGroup
 						aria-labelledby="demo-radio-buttons-group-label"
@@ -164,7 +199,10 @@ const Signup = () => {
 					</RadioGroup>
 
 					<div className="my-3">
-						<SubmitBtn Placeholder="Commit" />
+						<SubmitBtn
+							Placeholder="Commit"
+							disabled={loading}
+						/>
 					</div>
 					<div className="grid justify-items-center mb-3 text-center">
 						<p>

@@ -9,8 +9,8 @@ const accessChat = asyncHandler(async (req, res) => {
 		console.log("UserId param not sent with request");
 		return res.sendStatus(400);
 	}
-	console.log(`req.user._id: ${req.User._id}`);
-	console.log(`userId: ${userId}`);
+	// console.log(`req.user._id: ${req.User._id}`);
+	// console.log(`userId: ${userId}`);
 	var isChat = await chat
 		.find({
 			isCluster: false,

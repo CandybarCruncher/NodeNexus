@@ -45,7 +45,7 @@ const NavBar = ({
 								className="ml-2"
 							>
 								<img
-									src="../../public/logo.png"
+									src="/logo.png"
 									alt="Logo"
 									className="h-12 w-12"
 								/>

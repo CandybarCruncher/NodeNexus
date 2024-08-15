@@ -61,11 +61,13 @@ const Footer = ({ socket, closeMenu }) => {
 
 	useEffect(() => {
 		// Add event listener for clicks outside the emoji picker
-		document.addEventListener("mousedown", handleOutsideClick);
-		return () => {
-			document.removeEventListener("mousedown", handleOutsideClick);
-		};
-	}, []);
+		if (emojiPickerRef.current) {
+			document.addEventListener("mousedown", handleOutsideClick);
+			return () => {
+				document.removeEventListener("mousedown", handleOutsideClick);
+			};
+		}
+	});
 
 	return (
 		<FormControl

@@ -31,7 +31,7 @@ const Conversation = ({ socket, closeMenu }) => {
 				//   send notif
 			} else {
 				setChatlog([...chatlog, newMessageRecieved]);
-				console.log("context ----" + chatlog[0]);
+				// console.log("context ----" + chatlog[0]);
 			}
 		});
 	});

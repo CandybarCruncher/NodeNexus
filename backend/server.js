@@ -45,31 +45,37 @@ const io = require("socket.io")(server, {
 });
 
 io.on("connection", (socket) => {
-	socket.on("setup", (userData) => {
-		socket.join(userData._id);
-		console.log(userData.name + " is Online");
+	socket.on("setup", async (userData) => {
+		try {
+			socket.join(userData._id);
+			console.log(userData.name + " is Online");
+		} catch (error) {
+			console.error("Error in setup event:", error);
+			socket.emit("error", { message: "Failed to set up user connection." });
+		}
 	});
 
-	socket.on("join chat", (room) => {
-		socket.join(room);
-		console.log("welcome to " + room);
+	socket.on("join chat", async (room) => {
+		try {
+			socket.join(room);
+			console.log("welcome to " + room);
+		} catch (error) {
+			console.error("Error in join chat event:", error);
+			socket.emit("error", { message: "Failed to join chat room." });
+		}
 	});
 
-	//on new message being created
-	socket.on("new message", (newMessageRecieved) => {
-		const chat = newMessageRecieved.node; //take chatId
-		//iterate user
-		chat.users.forEach((user) => {
-			if (user._id == newMessageRecieved.sender._id) return;
-			socket.in(user._id).emit("message recieved", newMessageRecieved);
-			// console.log(
-			// 	"message: " +
-			// 		newMessageRecieved.content +
-			// 		" for - " +
-			// 		user.name +
-			// 		" by " +
-			// 		newMessageRecieved.sender.name
-			// );
-		});
+	socket.on("new message", async (newMessageRecieved) => {
+		try {
+			const chat = newMessageRecieved.node; // take chatId
+			// Iterate through users
+			chat.users.forEach((user) => {
+				if (user._id == newMessageRecieved.sender._id) return;
+				socket.in(user._id).emit("message recieved", newMessageRecieved);
+			});
+		} catch (error) {
+			console.error("Error in new message event:", error);
+			socket.emit("error", { message: "Failed to handle new message." });
+		}
 	});
 });

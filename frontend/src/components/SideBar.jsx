@@ -115,7 +115,7 @@ const SideBar = ({ closeSideBar }) => {
 							}}
 							onClick={() => {
 								clickHandler(chat._id);
-								closeSideBar;
+								closeSideBar();
 							}}
 						>
 							{!chat.isCluster && (

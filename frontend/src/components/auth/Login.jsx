@@ -24,10 +24,12 @@ const Login = () => {
 	return (
 		<>
 			<div className="grid justify-items-center">
-				<img
-					src="logo.png"
+				<a
+					href="/"
 					className="h-30 w-25 mt-[-13%]"
-				></img>
+				>
+					<img src="/logo.png" />
+				</a>
 			</div>
 			<form onSubmit={submitHandler}>
 				<div className="m-8">

@@ -9,10 +9,9 @@ const config = axios.create({
 });
 
 config.interceptors.request.use((config) => {
-	const token = getUserData()?.token;
-	if (token) {
-		config.headers.Authorization = `Bearer ${token}`;
-	}
+	config.baseURL
+		? (config.headers.Authorization = `Bearer ${getUserData()?.token}`)
+		: console.log("skipped");
 	return config;
 });
 
