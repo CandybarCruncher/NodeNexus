@@ -8,7 +8,7 @@ const ContactCard = ({ chatDetails }) => {
 						className="size-[3rem] rounded-full"
 					></img>
 				</div>
-				<div>
+				<div className="truncate">
 					<strong className="ml-5 text-xl">
 						{chatDetails?.name || chatDetails?.chatName}
 					</strong>

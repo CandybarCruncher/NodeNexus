@@ -1,6 +1,8 @@
 import React from "react";
 import SideBar from "./SideBar";
 import { clearUserData } from "../../local";
+import SearchBox from "./SearchBox";
+import AddUserBtn from "./buttons/AddUserBtn";
 
 const NavBar = ({
 	toggleMenu,
@@ -51,14 +53,9 @@ const NavBar = ({
 								/>
 							</a>
 						</div>
-						<div className="hidden sm:inline items-center w-[27rem] mx-4">
+						<div className="hidden sm:inline items-center mx-4">
 							<form className="flex w-full">
-								<input
-									className="form-control rounded-full bg-[#1f2833]"
-									type="search"
-									placeholder="&#128269; Search"
-									aria-label="Search"
-								/>
+								<SearchBox btnType={AddUserBtn} />
 							</form>
 						</div>
 						<div className="flex items-center">
@@ -101,12 +98,7 @@ const NavBar = ({
 						>
 							<div className="px-2 pb-2 space-y-1 sm:px-3 ">
 								<form className="flex sm:hidden px-3 py-2">
-									<input
-										className="form-control rounded-full bg-[#1f2833]"
-										type="search"
-										placeholder="&#128269; Search"
-										aria-label="Search"
-									/>
+									<SearchBox />
 								</form>
 								<a
 									href="/home"

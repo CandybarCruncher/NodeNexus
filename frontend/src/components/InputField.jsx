@@ -1,15 +1,7 @@
 import { Box, TextField } from "@mui/material";
 import React from "react";
 
-const InputField = ({
-	name,
-	type,
-	value,
-	className,
-	placeholder,
-	onChange,
-	required,
-}) => {
+const InputField = ({ name, type, value, placeholder, onChange, required }) => {
 	return (
 		<Box
 			sx={{

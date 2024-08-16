@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import ContactCard from "./ContactCard";
-import { Box, Skeleton, Stack, Tab, Tabs } from "@mui/material";
+import { Box, IconButton, Skeleton, Stack, Tab, Tabs } from "@mui/material";
 import config from "../../config";
 import { getUserData } from "../../local";
+import CreateCluster from "./buttons/CreateCluster";
 
 function CustomTabPanel(props) {
 	const { children, value, index, ...other } = props;
@@ -76,72 +77,81 @@ const SideBar = ({ closeSideBar }) => {
 					/>
 				</Tabs>
 			</Box>
-			{loading
-				? Array.from(new Array(10)).map((_, i) => (
-						<Box
-							key={i}
-							sx={{
-								m: 2,
-							}}
-						>
-							<Stack
-								direction="row"
-								spacing={2}
-								sx={{ alignItems: "center" }}
+			<Box
+				sx={{
+					overflowY: "auto",
+					scrollbarWidth: "thin",
+					scrollbarColor: "grey #1f2833",
+				}}
+			>
+				{loading
+					? Array.from(new Array(10)).map((_, i) => (
+							<Box
+								key={i}
+								sx={{
+									m: 2,
+								}}
 							>
-								<Skeleton
-									variant="circular"
-									height={55}
-									width={55}
-								/>
-								<Skeleton
-									variant="rectangular"
-									height={50}
-									width={250}
-									sx={{ borderRadius: 5 }}
-								/>
-							</Stack>
-						</Box>
-				  ))
-				: chats.map((chat) => (
-						<Box
-							key={chat._id}
-							sx={{
-								":hover": {
-									bgcolor: "#45a29e",
-									borderRadius: "20px",
-									cursor: "pointer",
-								},
-							}}
-							onClick={() => {
-								clickHandler(chat._id);
-								closeSideBar();
-							}}
-						>
-							{!chat.isCluster && (
-								<CustomTabPanel
-									value={value}
-									index={0}
+								<Stack
+									direction="row"
+									spacing={2}
+									sx={{ alignItems: "center" }}
 								>
-									<ContactCard
-										chatDetails={
-											chat.users[0]._id == getUserData()._id
-												? chat.users[1]
-												: chat.users[0]
-										}
+									<Skeleton
+										variant="circular"
+										height={55}
+										width={55}
 									/>
-								</CustomTabPanel>
-							)}
-							{chat.isCluster && (
-								<CustomTabPanel
-									value={value}
-									index={1}
-								>
-									<ContactCard chatDetails={chat} />
-								</CustomTabPanel>
-							)}
-						</Box>
-				  ))}
+									<Skeleton
+										variant="rectangular"
+										height={50}
+										width={250}
+										sx={{ borderRadius: 5 }}
+									/>
+								</Stack>
+							</Box>
+					  ))
+					: chats.map((chat) => (
+							<Box
+								key={chat._id}
+								sx={{
+									":hover": {
+										bgcolor: "#45a29e",
+										borderRadius: "20px",
+										cursor: "pointer",
+									},
+								}}
+								onClick={() => {
+									clickHandler(chat._id);
+									closeSideBar();
+								}}
+							>
+								{!chat.isCluster && (
+									<CustomTabPanel
+										value={value}
+										index={0}
+									>
+										<ContactCard
+											chatDetails={
+												chat.users[0]._id == getUserData()._id
+													? chat.users[1]
+													: chat.users[0]
+											}
+										/>
+									</CustomTabPanel>
+								)}
+								{chat.isCluster && (
+									<CustomTabPanel
+										value={value}
+										index={1}
+									>
+										<ContactCard chatDetails={chat} />
+									</CustomTabPanel>
+								)}
+							</Box>
+					  ))}
+				<CreateCluster />
+			</Box>
 		</div>
 	);
 };

@@ -43,10 +43,13 @@ const Chats = () => {
 				/>
 				<Box
 					width={"100%"}
+					height={"45em"}
 					sx={{
 						flexGrow: 1,
 						backgroundColor: "#0B0C10",
 						overflowY: "auto",
+						scrollbarWidth: "thin",
+						scrollbarColor: "#fff #000",
 					}}
 				>
 					<Conversation
