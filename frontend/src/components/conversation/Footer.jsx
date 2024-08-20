@@ -9,7 +9,8 @@ import {
 import React, { useContext, useEffect, useRef, useState } from "react";
 import config from "../../../config";
 import { useParams } from "react-router-dom";
-import { Chatlog } from "../conversation/Chats";
+import { SocketConnectedContext } from "./Chats";
+import { ChatlogContext, TypingContext, IsTypingContext } from "./ChatContext";
 import EmojiPicker from "emoji-picker-react";
 
 const StyledInput = styled(TextField)(({ theme }) => ({
@@ -21,14 +22,29 @@ const StyledInput = styled(TextField)(({ theme }) => ({
 }));
 
 const Footer = ({ socket, closeMenu }) => {
-	const [chatlog, setChatlog] = useContext(Chatlog);
+	const [chatlog, setChatlog] = useContext(ChatlogContext);
 	//chatlog is not being used but removing it breaks the submitHandler
+	const [socketConnected, setSocketConnected] = useContext(
+		SocketConnectedContext
+	);
+	const [typing, setTyping] = useContext(TypingContext); //self
+	const [isTyping, setIsTyping] = useContext(IsTypingContext); //other
 
 	const [content, setContent] = useState("");
 	const { chatId } = useParams();
+
 	const [showEmojiPicker, setShowEmojiPicker] = useState(false);
 	const [oeb, setOeb] = useState(false);
 	const emojiPickerRef = useRef(null);
+
+	useEffect(() => {
+		socket.on("typing", () => {
+			setIsTyping(true);
+		});
+		socket.on("stop typing", () => {
+			setIsTyping(false);
+		});
+	});
 
 	const submitHandler = async (e) => {
 		e.preventDefault();
@@ -42,7 +58,23 @@ const Footer = ({ socket, closeMenu }) => {
 	};
 
 	const handleKeyDown = (e) => {
+		if (!socketConnected) return;
+		if (!typing) setTyping(true);
+		socket.emit("typing", chatId);
+
+		let lastTypingTime = new Date().getTime();
+		var timerLength = 1500;
+		setTimeout(() => {
+			var timeNow = new Date().getTime();
+			var timeDiff = timeNow - lastTypingTime;
+			if (timeDiff >= timerLength && typing) {
+				socket.emit("stop typing", chatId);
+				setTyping(false);
+			}
+		}, timerLength);
+
 		if (e.key === "Enter" && !e.shiftKey) {
+			socket.emit("stop typing", chatId);
 			submitHandler(e);
 		}
 	};

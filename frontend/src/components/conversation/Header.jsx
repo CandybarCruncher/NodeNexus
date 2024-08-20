@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import {
 	Avatar,
 	Badge,
@@ -11,38 +11,43 @@ import {
 import config from "../../../config";
 import { useParams } from "react-router-dom";
 import { getUserData } from "../../../local";
+import { IsTypingContext, TypingContext } from "./ChatContext";
 
-const StyledBadge = styled(Badge)(({ theme }) => ({
-	"& .MuiBadge-badge": {
-		backgroundColor: "#44b700",
-		color: "#44b700",
-		boxShadow: `0 0 0 2px ${theme.palette.background.paper}`,
-		"&::after": {
-			position: "absolute",
-			top: 0,
-			left: 0,
-			width: "100%",
-			height: "100%",
-			borderRadius: "50%",
-			animation: "ripple 1.2s infinite ease-in-out",
-			border: "1px solid currentColor",
-			content: '""',
+const Header = ({ socket }) => {
+	const StyledBadge = styled(Badge)(({ theme}) => ({
+		"& .MuiBadge-badge": {
+			backgroundColor: online ? "#44b700" : "red",
+			color: online ? "#44b700" : "red",
+			boxShadow: `0 0 0 2px ${theme.palette.background.paper}`,
+			"&::after": {
+				position: "absolute",
+				top: 0,
+				left: 0,
+				width: "100%",
+				height: "100%",
+				borderRadius: "50%",
+				animation: "ripple 1.2s infinite ease-in-out",
+				border: "1px solid currentColor",
+				content: '""',
+			},
 		},
-	},
-	"@keyframes ripple": {
-		"0%": {
-			transform: "scale(.8)",
-			opacity: 1,
+		"@keyframes ripple": {
+			"0%": {
+				transform: "scale(.8)",
+				opacity: 1,
+			},
+			"100%": {
+				transform: "scale(2.4)",
+				opacity: 0,
+			},
 		},
-		"100%": {
-			transform: "scale(2.4)",
-			opacity: 0,
-		},
-	},
-}));
+	}));
 
-const Header = () => {
 	const [chats, setChats] = useState([]);
+	const [typing, setTyping] = useContext(TypingContext); //self
+	const [isTyping, setIsTyping] = useContext(IsTypingContext); //other
+	const [online, setOnline] = useState(false);
+
 	const { chatId } = useParams();
 	useEffect(() => {
 		fetchChats();
@@ -69,6 +74,17 @@ const Header = () => {
 			console.error(error);
 		}
 	};
+	useEffect(() => {
+		socket.emit("checkRoom", checkUser()?._id, (exists) => {
+			if (exists) {
+				setOnline(true);
+				console.log("Room exists!");
+			} else {
+				setOnline(false);
+				console.log("Room does not exist.");
+			}
+		});
+	});
 
 	return (
 		<Box
@@ -110,7 +126,9 @@ const Header = () => {
 								? chats[0]?.chatName
 								: checkUser()?.name}
 						</Typography>
-						<Typography variant="caption">Online</Typography>
+						<Typography variant="caption">
+							{!typing && isTyping ? <div>typing...</div> : <></>}
+						</Typography>
 					</Stack>
 				</Stack>
 				<Stack

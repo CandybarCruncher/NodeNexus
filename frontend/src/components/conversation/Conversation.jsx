@@ -3,10 +3,10 @@ import React, { useContext, useEffect, useRef, useState } from "react";
 import { LinkMsg, MediaMsg, ReplyMsg, TextMsg, TimeLine } from "./MsgTypes";
 import config from "../../../config";
 import { useParams } from "react-router-dom";
-import { Chatlog } from "../conversation/Chats";
+import { ChatlogContext } from "./ChatContext";
 
 const Conversation = ({ socket, closeMenu }) => {
-	const [chatlog, setChatlog] = useContext(Chatlog);
+	const [chatlog, setChatlog] = useContext(ChatlogContext);
 
 	const { chatId } = useParams();
 	const lastMessageRef = useRef(null);
@@ -26,7 +26,7 @@ const Conversation = ({ socket, closeMenu }) => {
 
 	//login user recieving a msg anywhere
 	useEffect(() => {
-		socket?.on("message recieved", (newMessageRecieved) => {
+		socket.on("message recieved", (newMessageRecieved) => {
 			if (chatId !== newMessageRecieved.node._id) {
 				//   send notif
 			} else {
