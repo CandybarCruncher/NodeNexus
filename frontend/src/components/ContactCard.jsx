@@ -1,13 +1,13 @@
+import { Avatar } from "@mui/material";
+
 const ContactCard = ({ chatDetails }) => {
 	return (
 		<>
-			<div className="flex items-center">
-				<div className="m-2 rounded-full">
-					<img
-						src={chatDetails?.pic || chatDetails?.icon}
-						className="size-[3rem] rounded-full"
-					></img>
-				</div>
+			<div className="flex items-center p-1">
+				<Avatar
+					sx={{ width: 56, height: 56 }}
+					src={chatDetails?.pic || chatDetails?.icon}
+				></Avatar>
 				<div className="truncate">
 					<strong className="ml-5 text-xl">
 						{chatDetails?.name || chatDetails?.chatName}

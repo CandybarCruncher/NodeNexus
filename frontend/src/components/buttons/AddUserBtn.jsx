@@ -1,9 +1,8 @@
 import { Button } from "@mui/material";
 import React from "react";
 import config from "../../../config";
-import { getUserData } from "../../../local";
 
-const AddUserBtn = ({ userId }) => {
+const AddUserBtn = ({ userId, addUser }) => {
 	const addNewNode = async () => {
 		const currentUser = { userId };
 		await config.post("/api/cht", currentUser);
@@ -19,7 +18,7 @@ const AddUserBtn = ({ userId }) => {
 				fontWeight: "bold",
 				height: "2rem",
 			}}
-			onClick={addNewNode}
+			onClick={addUser ? addUser : addNewNode}
 		>
 			Add me
 		</Button>
