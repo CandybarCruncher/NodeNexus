@@ -4,6 +4,7 @@ import config from "../../../config";
 import SubmitBtn from "../buttons/SubmitBtn";
 import InputField from "../InputField";
 import { setUserData } from "../../../local";
+import ErrorHandler from "../ErrorHandler";
 
 const Login = () => {
 	const { sharedValue } = useOutletContext();
@@ -11,14 +12,18 @@ const Login = () => {
 	const navigate = useNavigate();
 
 	const submitHandler = async (e) => {
-		e.preventDefault();
-		const email = sharedValue;
-		const existingUser = { password, email };
+		try {
+			e.preventDefault();
+			const email = sharedValue;
+			const existingUser = { password, email };
 
-		const userData = await config.post("/api/usr/login", existingUser);
-		setUserData(userData);
-		setPassword("");
-		navigate("/home");
+			const userData = await config.post("/api/usr/login", existingUser);
+			setUserData(userData);
+			setPassword("");
+			navigate("/home");
+		} catch (error) {
+			ErrorHandler(error);
+		}
 	};
 
 	return (

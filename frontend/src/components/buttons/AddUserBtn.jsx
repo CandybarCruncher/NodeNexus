@@ -1,11 +1,16 @@
 import { Button } from "@mui/material";
 import React from "react";
 import config from "../../../config";
+import ErrorHandler from "../ErrorHandler";
 
 const AddUserBtn = ({ userId, addUser }) => {
 	const addNewNode = async () => {
-		const currentUser = { userId };
-		await config.post("/api/cht", currentUser);
+		try {
+			const currentUser = { userId };
+			await config.post("/api/cht", currentUser);
+		} catch (error) {
+			ErrorHandler(error);
+		}
 	};
 
 	return (

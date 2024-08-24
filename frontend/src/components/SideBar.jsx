@@ -5,6 +5,7 @@ import { Box, IconButton, Skeleton, Stack, Tab, Tabs } from "@mui/material";
 import config from "../../config";
 import { getUserData } from "../../local";
 import CreateCluster from "./buttons/CreateCluster";
+import ErrorHandler from "./ErrorHandler";
 
 function CustomTabPanel(props) {
 	const { children, value, index, ...other } = props;
@@ -48,7 +49,7 @@ const SideBar = ({ closeSideBar }) => {
 			setChats(data);
 			setLoading(false);
 		} catch (error) {
-			console.error(error);
+			ErrorHandler(error);
 		}
 	};
 

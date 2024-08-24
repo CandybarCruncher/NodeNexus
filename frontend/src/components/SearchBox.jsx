@@ -4,6 +4,7 @@ import _ from "lodash";
 import { Box, Stack } from "@mui/material";
 import ContactCard from "./ContactCard";
 import AddUserBtn from "./buttons/AddUserBtn";
+import ErrorHandler from "./ErrorHandler";
 
 const SearchBox = () => {
 	const [query, setQuery] = useState("");
@@ -14,7 +15,7 @@ const SearchBox = () => {
 			const { data } = await config.get(`/api/usr/users?search=${searchQuery}`);
 			setUsers(data);
 		} catch (error) {
-			console.error(error);
+			ErrorHandler(error);
 		}
 	};
 

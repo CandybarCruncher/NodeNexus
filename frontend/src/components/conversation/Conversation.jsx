@@ -4,6 +4,7 @@ import { LinkMsg, MediaMsg, ReplyMsg, TextMsg, TimeLine } from "./MsgTypes";
 import config from "../../../config";
 import { useParams } from "react-router-dom";
 import { ChatlogContext } from "./ChatContext";
+import ErrorHandler from "../ErrorHandler";
 
 const Conversation = ({ socket, closeMenu }) => {
 	const [chatlog, setChatlog] = useContext(ChatlogContext);
@@ -42,7 +43,7 @@ const Conversation = ({ socket, closeMenu }) => {
 			setChatlog(data);
 			setLoading(false);
 		} catch (error) {
-			console.error(error);
+			ErrorHandler(error);
 		}
 	};
 

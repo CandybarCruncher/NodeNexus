@@ -1,7 +1,6 @@
 import axios from "axios";
 import { getUserData } from "./local";
-export const ENDPOINT =
-	"http://localhost:6969";
+export const ENDPOINT = "http://localhost:6969";
 
 const config = axios.create({
 	baseURL: ENDPOINT,
@@ -11,9 +10,8 @@ const config = axios.create({
 });
 
 config.interceptors.request.use((config) => {
-	config.baseURL
-		? (config.headers.Authorization = `Bearer ${getUserData()?.token}`)
-		: console.log("skipped");
+	const token = getUserData()?.token;
+	config.baseURL && (config.headers.Authorization = `Bearer ${token}`);
 	return config;
 });
 

@@ -14,6 +14,7 @@ import SubmitBtn from "./SubmitBtn";
 import config from "../../../config";
 import AddUserBtn from "./AddUserBtn";
 import { getUserData } from "../../../local";
+import ErrorHandler from "../ErrorHandler";
 
 const CreateCluster = () => {
 	const [name, setName] = useState("");
@@ -33,11 +34,20 @@ const CreateCluster = () => {
 	};
 
 	const clusterHandler = async (e) => {
-		e.preventDefault();
-		const cluData = { users, name, icon: icon };
-		await config.post("api/cht/group", cluData);
-		setGrpCr(false);
-		setName("");
+		try {
+			e.preventDefault();
+			const cluData = { users, name };
+			if (icon) {
+				cluData.icon = icon;
+			}
+			await config.post("api/cht/group", cluData);
+			setGrpCr(false);
+			setName("");
+			setIcon(null);
+			setUsers([]);
+		} catch (error) {
+			ErrorHandler(error);
+		}
 	};
 
 	const handleClose = () => {
@@ -45,25 +55,29 @@ const CreateCluster = () => {
 	};
 
 	const uploadImage = async (icon) => {
-		setLoading(true);
+		try {
+			setLoading(true);
 
-		const formData = new FormData();
-		formData.append("file", icon);
-		formData.append("upload_preset", "NodeNexus");
+			const formData = new FormData();
+			formData.append("file", icon);
+			formData.append("upload_preset", "NodeNexus");
 
-		const response = await config.post(
-			"https://api.cloudinary.com/v1_1/dwkgrubve/image/upload",
-			formData,
-			{
-				baseURL: "",
-				headers: {
-					"Content-Type": "multipart/form-data",
-				},
-			}
-		);
-		setLoading(false);
+			const response = await config.post(
+				"https://api.cloudinary.com/v1_1/dwkgrubve/image/upload",
+				formData,
+				{
+					baseURL: "",
+					headers: {
+						"Content-Type": "multipart/form-data",
+					},
+				}
+			);
+			setLoading(false);
 
-		return response.data.secure_url;
+			return response.data.secure_url;
+		} catch (error) {
+			ErrorHandler(error);
+		}
 	};
 
 	const [chats, setChats] = useState([]);
@@ -77,6 +91,7 @@ const CreateCluster = () => {
 			const { data } = await config.get("/api/cht");
 			setChats(data);
 		} catch (error) {
+			ErrorHandler(error);
 			console.error(error);
 		}
 	};

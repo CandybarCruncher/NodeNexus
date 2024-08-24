@@ -12,6 +12,7 @@ import { useParams } from "react-router-dom";
 import { SocketConnectedContext } from "./Chats";
 import { ChatlogContext, TypingContext, IsTypingContext } from "./ChatContext";
 import EmojiPicker from "emoji-picker-react";
+import ErrorHandler from "../ErrorHandler";
 
 const StyledInput = styled(TextField)(({ theme }) => ({
 	"& .MuiInputBase-input": {
@@ -47,14 +48,18 @@ const Footer = ({ socket, closeMenu }) => {
 	});
 
 	const submitHandler = async (e) => {
-		e.preventDefault();
-		if (!content.trimEnd()) return;
-		const message = { content, chatId };
-		const { data } = await config.post("/api/msg", message);
-		setChatlog((prevChatlog) => [...prevChatlog, data]);
-		socket.emit("new message", data);
-		setContent("");
-		setShowEmojiPicker(false);
+		try {
+			e.preventDefault();
+			if (!content.trimEnd()) return;
+			const message = { content, chatId };
+			const { data } = await config.post("/api/msg", message);
+			setChatlog((prevChatlog) => [...prevChatlog, data]);
+			socket.emit("new message", data);
+			setContent("");
+			setShowEmojiPicker(false);
+		} catch (error) {
+			ErrorHandler(error);
+		}
 	};
 
 	const handleKeyDown = (e) => {

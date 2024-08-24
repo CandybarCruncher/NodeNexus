@@ -32,7 +32,7 @@ if (process.env.NODE_ENV === "production") {
 	);
 } else {
 	app.get("/", (req, res) => {
-		res.send("API is running...");
+		res.send("API is running ...");
 	});
 }
 
@@ -55,7 +55,7 @@ io.on("connection", (socket) => {
 		try {
 			socket.join(userData._id);
 			socket.emit("connected");
-			console.log(userData.name + " is Online");
+			// console.log(userData.name + " is Online");
 		} catch (error) {
 			console.error("Error in setup event:", error);
 			socket.emit("error", { message: "Failed to set up user connection." });
@@ -65,7 +65,7 @@ io.on("connection", (socket) => {
 	socket.on("join chat", (room) => {
 		try {
 			socket.join(room);
-			console.log("Welcome to " + room);
+			// console.log("Welcome to " + room);
 		} catch (error) {
 			console.error("Error in join chat event:", error);
 			socket.emit("error", { message: "Failed to join chat room." });
@@ -74,11 +74,11 @@ io.on("connection", (socket) => {
 
 	socket.on("checkRoom", (room, callback) => {
 		try {
-			console.log("room---" + room);
+			// console.log("room---" + room);
 			const rooms = io.sockets.adapter.rooms;
-			console.log("room--" + rooms);
+			// console.log("room--" + rooms);
 			const roomExists = rooms.has(room);
-			console.log(roomExists);
+			// console.log(roomExists);
 
 			callback(roomExists);
 		} catch (error) {
@@ -104,10 +104,18 @@ io.on("connection", (socket) => {
 		}
 	});
 
+	// socket.on("dC", () => {
+	// 	try {
+	// 		socket.in(socket.id).disconnectSockets(true);
+	// 	} catch (error) {
+	// 		console.error("Error on logout:", error);
+	// 	}
+	// });
+
 	socket.on("disconnect", () => {
 		try {
-			socket.emit("dis");
-			console.log("USER DISCONNECTED" + socket.id);
+			// socket.emit("dis");
+			// console.log("USER DISCONNECTED " + socket.id);
 			// Handle user disconnection logic here if needed
 		} catch (error) {
 			console.error("Error in disconnect event:", error);

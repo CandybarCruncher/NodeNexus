@@ -12,9 +12,10 @@ import config from "../../../config";
 import { useParams } from "react-router-dom";
 import { getUserData } from "../../../local";
 import { IsTypingContext, TypingContext } from "./ChatContext";
+import ErrorHandler from "../ErrorHandler";
 
 const Header = ({ socket }) => {
-	const StyledBadge = styled(Badge)(({ theme}) => ({
+	const StyledBadge = styled(Badge)(({ theme }) => ({
 		"& .MuiBadge-badge": {
 			backgroundColor: online ? "#44b700" : "red",
 			color: online ? "#44b700" : "red",
@@ -62,7 +63,7 @@ const Header = ({ socket }) => {
 			// console.log(data);
 			setChats(data);
 		} catch (error) {
-			console.error(error);
+			ErrorHandler(error);
 		}
 	};
 	const checkUser = () => {
@@ -78,13 +79,13 @@ const Header = ({ socket }) => {
 		socket.emit("checkRoom", checkUser()?._id, (exists) => {
 			if (exists) {
 				setOnline(true);
-				console.log("Room exists!");
+				// console.log("Room exists!");
 			} else {
 				setOnline(false);
-				console.log("Room does not exist.");
+				// console.log("Room does not exist.");
 			}
 		});
-	});
+	}, [typing, isTyping]);
 
 	return (
 		<Box
@@ -107,18 +108,27 @@ const Header = ({ socket }) => {
 					spacing={2}
 				>
 					<Box>
-						<StyledBadge
-							overlap="circular"
-							anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
-							variant="dot"
-						>
+						{chats[0]?.isCluster ? (
 							<Avatar
 								alt={chats[0]?.chatName || checkUser()?.name}
 								src={
 									(chats[0]?.isCluster && chats[0]?.icon) || checkUser()?.pic
 								}
 							></Avatar>
-						</StyledBadge>
+						) : (
+							<StyledBadge
+								overlap="circular"
+								anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
+								variant="dot"
+							>
+								<Avatar
+									alt={chats[0]?.chatName || checkUser()?.name}
+									src={
+										(chats[0]?.isCluster && chats[0]?.icon) || checkUser()?.pic
+									}
+								></Avatar>
+							</StyledBadge>
+						)}
 					</Box>
 					<Stack spacing={0.2}>
 						<Typography variant="subtitle">
@@ -126,9 +136,11 @@ const Header = ({ socket }) => {
 								? chats[0]?.chatName
 								: checkUser()?.name}
 						</Typography>
-						<Typography variant="caption">
-							{!typing && isTyping ? <div>typing...</div> : <></>}
-						</Typography>
+						{chats[0]?.isCluster ? null : (
+							<Typography variant="caption">
+								{!typing && isTyping ? <div>typing...</div> : <></>}
+							</Typography>
+						)}
 					</Stack>
 				</Stack>
 				<Stack

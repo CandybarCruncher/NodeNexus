@@ -13,6 +13,7 @@ import {
 	CircularProgress,
 	Stack,
 } from "@mui/material";
+import ErrorHandler from "../ErrorHandler";
 
 const Signup = () => {
 	const { sharedValue } = useOutletContext();
@@ -30,49 +31,58 @@ const Signup = () => {
 	}, [pic]);
 
 	const uploadImage = async (pic) => {
-		setLoading(true);
-		const formData = new FormData();
-		formData.append("file", pic);
-		formData.append("upload_preset", "NodeNexus");
+		try {
+			setLoading(true);
+			const formData = new FormData();
+			formData.append("file", pic);
+			formData.append("upload_preset", "NodeNexus");
+			const response = await config.post(
+				"https://api.cloudinary.com/v1_1/dwkgrubve/image/upload",
+				formData,
+				{
+					baseURL: "",
+					headers: {
+						"Content-Type": "multipart/form-data",
+					},
+				}
+			);
 
-		const response = await config.post(
-			"https://api.cloudinary.com/v1_1/dwkgrubve/image/upload",
-			formData,
-			{
-				baseURL: "",
-				headers: {
-					"Content-Type": "multipart/form-data",
-				},
-			}
-		);
-
-		setLoading(false); // Hide loading indicator after upload
-		return response.data.secure_url;
+			setLoading(false); // Hide loading indicator after upload
+			return response.data.secure_url;
+		} catch (error) {
+			ErrorHandler(error);
+		}
 	};
 
 	const submitHandler = async (e) => {
-		e.preventDefault();
+		try {
+			e.preventDefault();
 
-		const newUser = {
-			email,
-			name,
-			username,
-			password,
-			gender,
-			pic: pic,
-		};
+			const newUser = {
+				email,
+				name,
+				username,
+				password,
+				gender,
+			};
+			if (pic) {
+				newUser.pic = pic;
+			}
 
-		const userData = await config.post("/api/usr/signup", newUser);
-		setUserData(userData);
+			const userData = await config.post("/api/usr/signup", newUser);
+			setUserData(userData);
 
-		setName("");
-		setUsername("");
-		setEmail("");
-		setPassword("");
-		setGender("");
-		setPic(null);
+			setName("");
+			setUsername("");
+			setEmail("");
+			setPassword("");
+			setGender("");
+			setPic(null);
 
-		navigate("/home");
+			navigate("/home");
+		} catch (error) {
+			ErrorHandler(error);
+		}
 	};
 
 	return (
