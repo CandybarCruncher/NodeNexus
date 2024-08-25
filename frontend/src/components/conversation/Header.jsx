@@ -4,6 +4,7 @@ import {
 	Badge,
 	Box,
 	IconButton,
+	Modal,
 	Stack,
 	styled,
 	Typography,
@@ -12,6 +13,7 @@ import config from "../../../config";
 import { useParams } from "react-router-dom";
 import { getUserData } from "../../../local";
 import { IsTypingContext, TypingContext } from "./ChatContext";
+import UserCard from "../profile/UserCard";
 import ErrorHandler from "../ErrorHandler";
 
 const Header = ({ socket }) => {
@@ -48,6 +50,7 @@ const Header = ({ socket }) => {
 	const [typing, setTyping] = useContext(TypingContext); //self
 	const [isTyping, setIsTyping] = useContext(IsTypingContext); //other
 	const [online, setOnline] = useState(false);
+	const [userCard, setUserCard] = useState(false);
 
 	const { chatId } = useParams();
 	useEffect(() => {
@@ -87,6 +90,10 @@ const Header = ({ socket }) => {
 		});
 	}, [typing, isTyping]);
 
+	const showUserCard = () => {
+		setUserCard(true);
+	};
+
 	return (
 		<Box
 			p={2}
@@ -106,6 +113,12 @@ const Header = ({ socket }) => {
 				<Stack
 					direction={"row"}
 					spacing={2}
+					onClick={showUserCard}
+					sx={{
+						":hover": {
+							cursor: "pointer",
+						},
+					}}
 				>
 					<Box>
 						{chats[0]?.isCluster ? (
@@ -143,6 +156,14 @@ const Header = ({ socket }) => {
 						)}
 					</Stack>
 				</Stack>
+				{userCard && (
+					<UserCard
+						userCard={userCard}
+						setUserCard={setUserCard}
+						checkUser={checkUser}
+						chats={chats}
+					/>
+				)}
 				<Stack
 					direction={"row"}
 					spacing={3}

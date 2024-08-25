@@ -4,11 +4,12 @@ import config from "../../../config";
 import SubmitBtn from "../buttons/SubmitBtn";
 import InputField from "../InputField";
 import { setUserData } from "../../../local";
-import ErrorHandler from "../ErrorHandler";
 
 const Login = () => {
 	const { sharedValue } = useOutletContext();
 	const [password, setPassword] = useState("");
+	const [errorMessage, setErrorMessage] = useState("");
+
 	const navigate = useNavigate();
 
 	const submitHandler = async (e) => {
@@ -22,7 +23,7 @@ const Login = () => {
 			setPassword("");
 			navigate("/home");
 		} catch (error) {
-			ErrorHandler(error);
+			setErrorMessage(error.response?.data?.message || "An error occurred");
 		}
 	};
 
@@ -66,6 +67,11 @@ const Login = () => {
 							onChange={(event) => setPassword(event.target.value)}
 						/>
 					</div>
+					{errorMessage && (
+						<div className="text-red-500">
+							<p>{errorMessage}</p>
+						</div>
+					)}
 					<div className="sm:flex">
 						<div className="mt-2">
 							<input

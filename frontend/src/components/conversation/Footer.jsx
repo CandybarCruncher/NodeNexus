@@ -13,6 +13,9 @@ import { SocketConnectedContext } from "./Chats";
 import { ChatlogContext, TypingContext, IsTypingContext } from "./ChatContext";
 import EmojiPicker from "emoji-picker-react";
 import ErrorHandler from "../ErrorHandler";
+import InsertEmoticonIcon from "@mui/icons-material/InsertEmoticon";
+import AttachFileIcon from "@mui/icons-material/AttachFile";
+import SendIcon from "@mui/icons-material/Send";
 
 const StyledInput = styled(TextField)(({ theme }) => ({
 	"& .MuiInputBase-input": {
@@ -134,12 +137,12 @@ const Footer = ({ socket, closeMenu }) => {
 						maxRows={4}
 						InputProps={{
 							style: {
-								padding: "1px 14px",
+								padding: "1px 10px",
 							},
 							disableUnderline: true,
 							startAdornment: (
-								<IconButton sx={{ mr: "0.5rem" }}>
-									<i className="fa-solid fa-link"></i>
+								<IconButton>
+									<AttachFileIcon sx={{ fontSize: "1.8rem" }} />
 								</IconButton>
 							),
 							endAdornment: (
@@ -154,7 +157,7 @@ const Footer = ({ socket, closeMenu }) => {
 											}
 										}}
 									>
-										<i className="fa-regular fa-face-smile"></i>
+										<InsertEmoticonIcon sx={{ fontSize: "1.8rem" }} />
 									</IconButton>
 									{showEmojiPicker && (
 										<Box
@@ -173,8 +176,6 @@ const Footer = ({ socket, closeMenu }) => {
 					/>
 					<Box
 						sx={{
-							height: 50,
-							width: 50,
 							backgroundColor: "#45a29e",
 							borderRadius: 4,
 						}}
@@ -185,7 +186,7 @@ const Footer = ({ socket, closeMenu }) => {
 							justifyContent="center"
 						>
 							<IconButton onClick={submitHandler}>
-								<i className="fa-solid fa-paper-plane"></i>
+								<SendIcon sx={{ fontSize: "2rem" }} />
 							</IconButton>
 						</Stack>
 					</Box>

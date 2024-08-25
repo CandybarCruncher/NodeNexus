@@ -3,6 +3,15 @@ import SideBar from "./SideBar";
 import { clearUserData } from "../../local";
 import SearchBox from "./SearchBox";
 import AddUserBtn from "./buttons/AddUserBtn";
+import { Modal } from "@mui/material";
+import LogoutIcon from "@mui/icons-material/Logout";
+import AccountCircleIcon from "@mui/icons-material/AccountCircle";
+import NotificationsActiveIcon from "@mui/icons-material/NotificationsActive";
+import HomeIcon from "@mui/icons-material/Home";
+import SearchIcon from "@mui/icons-material/Search";
+import NotificationsIcon from "@mui/icons-material/Notifications";
+import ChatIcon from "@mui/icons-material/Chat";
+import PersonIcon from "@mui/icons-material/Person";
 
 const NavBar = ({
 	toggleMenu,
@@ -10,10 +19,12 @@ const NavBar = ({
 	closeSideBar,
 	isSideBarOpen,
 	isMenuOpen,
+	openSearchBox,
+	isSearchOpen,
+	closeSearchBox,
 }) => {
 	const handleLogout = () => {
-		// clearUserData();
-		navigate("/");
+		clearUserData();
 	};
 
 	return (
@@ -53,95 +64,137 @@ const NavBar = ({
 								/>
 							</a>
 						</div>
-						<div className="hidden sm:inline items-center mx-4">
+						<div className="hidden md:inline items-center mx-4">
 							<form className="flex w-full">
 								<SearchBox btnType={AddUserBtn} />
 							</form>
 						</div>
 						<div className="flex items-center">
-							<div className="hidden md:flex space-x-4">
+							<div className="hidden sm:flex space-x-4">
 								<a href="/notifications">
-									<img
-										src="https://img.icons8.com/?size=100&id=11642&format=png&color=45A29E"
-										alt="Notification Icon"
-										className="h-9 w-9"
+									<NotificationsActiveIcon
+										sx={{
+											fontSize: "2.5rem",
+											color: "#45a29e",
+										}}
 									/>
 								</a>
 
 								<a href="/user">
-									<img
-										src="https://img.icons8.com/?size=100&id=7819&format=png&color=45A29E"
-										alt="User Icon"
-										className="h-10 w-10"
+									<AccountCircleIcon
+										sx={{
+											fontSize: "2.5rem",
+											color: "#45a29e",
+										}}
 									/>
 								</a>
 								<a
 									href="/"
 									onClick={handleLogout}
 								>
-									<img
-										src="https://img.icons8.com/?size=100&id=26217&format=png&color=45A29E"
-										alt="Log out Icon"
-										className="h-10 w-10"
+									<LogoutIcon
+										sx={{
+											fontSize: "2.5rem",
+											color: "#45a29e",
+										}}
 									/>
 								</a>
 							</div>
 						</div>
 					</div>
 				</div>
-
 				{isMenuOpen && (
-					<div className="">
-						<div
-							className="lg:hidden absolute bg-black w-full rounded-xl"
-							onClick={toggleMenu}
-						>
-							<div className="px-2 pb-2 space-y-1 sm:px-3 ">
-								<form className="flex sm:hidden px-3 py-2">
-									<SearchBox />
-								</form>
-								<a
-									href="/home"
-									className="lg:hidden block px-3 py-2 rounded-md text-center font-medium text-[#45a29e] hover:text-white hover:bg-[#45a29e]"
-								>
-									Home
-								</a>
-								<a
-									href="/search"
-									className="block px-3 py-2 rounded-md text-center font-medium text-[#45a29e] hover:text-white hover:bg-[#45a29e]"
-								>
-									Search
-								</a>
-								<a
-									href="/notifications"
-									className="md:hidden block px-3 py-2 rounded-md text-center font-medium text-[#45a29e] hover:text-white hover:bg-[#45a29e]"
-								>
-									Notifications
-								</a>
-								<a
-									href="/user"
-									className="md:hidden block px-3 py-2 rounded-md text-center font-medium text-[#45a29e] hover:text-white hover:bg-[#45a29e]"
-								>
-									User
-								</a>
-								<a
-									onClick={openSideBar}
-									className="block px-3 py-2 rounded-md text-center font-medium text-[#45a29e] hover:text-white hover:bg-[#45a29e]"
-								>
-									Chats
-								</a>
-								<a
-									href="/"
-									onClick={handleLogout}
-									className="md:hidden block px-3 py-2 rounded-md text-center font-medium text-[#45a29e] hover:text-white hover:bg-[#45a29e]"
-								>
-									Log out
-								</a>
+					<Modal
+						open={isMenuOpen}
+						onClose={toggleMenu}
+						aria-labelledby="modal-title"
+						aria-describedby="modal-description"
+						sx={{
+							zIndex: 49,
+						}}
+					>
+						<div className="mt-[4rem]">
+							<div
+								className="lg:hidden absolute bg-black w-full rounded-xl"
+								onClick={toggleMenu}
+							>
+								<div className="px-2 pb-2 space-y-1 sm:px-3 ">
+									<a
+										href="/home"
+										className="lg:hidden block px-3 py-2 flex justify-center rounded-md text-center font-medium text-[#45a29e] hover:text-white hover:bg-[#45a29e]"
+									>
+										<HomeIcon />
+										Home
+									</a>
+									<a
+										onClick={openSearchBox}
+										className="cursor-pointer md:hidden block px-3 py-2 flex justify-center rounded-md text-center font-medium text-[#45a29e] hover:text-white hover:bg-[#45a29e]"
+									>
+										<SearchIcon />
+										Search
+									</a>
+									<a
+										href="/notifications"
+										className="sm:hidden block px-3 py-2 flex justify-center rounded-md text-center font-medium text-[#45a29e] hover:text-white hover:bg-[#45a29e]"
+									>
+										<NotificationsIcon />
+										Notifications
+									</a>
+
+									<a
+										onClick={openSideBar}
+										className="cursor-pointer block px-3 py-2 flex justify-center rounded-md text-center font-medium text-[#45a29e] hover:text-white hover:bg-[#45a29e]"
+									>
+										<ChatIcon />
+										Chats
+									</a>
+									<a
+										href="/user"
+										className="sm:hidden block px-3 py-2 flex justify-center rounded-md text-center font-medium text-[#45a29e] hover:text-white hover:bg-[#45a29e]"
+									>
+										<PersonIcon />
+										Your Profile
+									</a>
+									<a
+										href="/"
+										onClick={handleLogout}
+										className="sm:hidden block px-3 py-2 flex justify-center rounded-md text-center font-medium text-[#45a29e] hover:text-white hover:bg-[#45a29e]"
+									>
+										<LogoutIcon />
+										Log out
+									</a>
+								</div>
 							</div>
 						</div>
-					</div>
+					</Modal>
 				)}
 			</nav>
+
+			{isSearchOpen && (
+				<div className="fixed inset-0 bg-gray-600 bg-opacity-50 z-50">
+					<div className="fixed inset-0 bg-[#0b0c10] shadow-lg z-50 p-4">
+						<button
+							onClick={closeSearchBox}
+							className="p-2 rounded-md hover:text-white hover:bg-gray-700 focus:outline-none focus:bg-gray-700 focus:text-white"
+						>
+							<svg
+								className="h-6 w-6"
+								stroke="currentColor"
+								fill="none"
+								viewBox="0 0 24 24"
+								strokeLinecap="round"
+								strokeLinejoin="round"
+								strokeWidth="2"
+							>
+								<path d="M6 18L18 6M6 6l12 12" />
+							</svg>
+						</button>
+						<div className="grid justify-center">
+							<SearchBox />
+						</div>
+					</div>
+				</div>
+			)}
 
 			{isSideBarOpen && (
 				<div className="fixed inset-0 bg-gray-600 bg-opacity-50 z-50">

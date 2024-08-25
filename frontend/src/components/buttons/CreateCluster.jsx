@@ -52,6 +52,7 @@ const CreateCluster = () => {
 
 	const handleClose = () => {
 		setGrpCr(false);
+		setUsers("");
 	};
 
 	const uploadImage = async (icon) => {
@@ -183,7 +184,7 @@ const CreateCluster = () => {
 								</Stack>
 								<Box
 									width="100%"
-									height="10em"
+									height="11.11em"
 									alignItems="center"
 									p={0.5}
 									sx={{
@@ -244,6 +245,7 @@ const CreateCluster = () => {
 														/>
 													) : (
 														<AddUserBtn
+															placeholder={"Add"}
 															addUser={() => addUserToCluster(userIdToCheck)}
 															userId={userIdToCheck}
 														/>

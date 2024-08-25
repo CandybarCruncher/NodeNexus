@@ -6,6 +6,7 @@ import SideBar from "../components/SideBar";
 const HomePage = () => {
 	const [isMenuOpen, setIsMenuOpen] = useState(false);
 	const [isSideBarOpen, setIsSideBarOpen] = useState(false);
+	const [isSearchOpen, setIsSearchOpen] = useState(false);
 
 	const toggleMenu = () => {
 		setIsMenuOpen(!isMenuOpen);
@@ -22,6 +23,15 @@ const HomePage = () => {
 	const closeSideBar = () => {
 		setIsSideBarOpen(false);
 	};
+
+	const openSearchBox = () => {
+		setIsSearchOpen(true);
+	};
+
+	const closeSearchBox = () => {
+		setIsSearchOpen(false);
+	};
+
 	return (
 		<>
 			<NavBar
@@ -30,12 +40,15 @@ const HomePage = () => {
 				closeSideBar={closeSideBar}
 				isSideBarOpen={isSideBarOpen}
 				isMenuOpen={isMenuOpen}
+				openSearchBox={openSearchBox}
+				isSearchOpen={isSearchOpen}
+				closeSearchBox={closeSearchBox}
 			/>
 			<div className="flex">
 				<div className="hidden h-full lg:inline-block">
 					<SideBar />
 				</div>
-				<div className="w-full over backdrop-blur-sm bg-white/5 m-2 rounded-2xl overflow-hidden">
+				<div className="w-full m-2 rounded-2xl overflow-hidden">
 					<Outlet context={{ closeMenu }} />
 				</div>
 			</div>

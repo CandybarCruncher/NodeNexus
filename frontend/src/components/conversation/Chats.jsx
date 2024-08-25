@@ -41,13 +41,13 @@ const Chats = () => {
 				value={[socketConnected, setSocketConnected]}
 			>
 				<Stack
-					maxHeight={"91vh"}
+					maxHeight={"90vh"}
 					width={"auto"}
 				>
 					<Header socket={socket} />
 					<Box
 						width={"100%"}
-						height={"45em"}
+						height={"100vh"}
 						sx={{
 							flexGrow: 1,
 							backgroundColor: "#0B0C10",

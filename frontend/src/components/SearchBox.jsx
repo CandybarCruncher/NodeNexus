@@ -9,6 +9,15 @@ import ErrorHandler from "./ErrorHandler";
 const SearchBox = () => {
 	const [query, setQuery] = useState("");
 	const [users, setUsers] = useState([]);
+	const [addedUsers, setAddedUsers] = useState(() => {
+		const savedUsers = localStorage.getItem("addedUsers");
+		return savedUsers ? JSON.parse(savedUsers) : [];
+	});
+	const handleAddUser = (userId) => {
+		const newUsers = [...addedUsers, userId];
+		setAddedUsers(newUsers);
+		localStorage.setItem("addedUsers", JSON.stringify(newUsers));
+	};
 
 	const fetchUsers = async (searchQuery) => {
 		try {
@@ -76,7 +85,14 @@ const SearchBox = () => {
 										justifyContent={"space-between"}
 									>
 										<ContactCard chatDetails={user} />
-										<AddUserBtn userId={user._id} />
+										{!addedUsers.includes(user._id) ? (
+											<AddUserBtn
+												placeholder={"Add me"}
+												userId={user._id}
+												onAddUser={handleAddUser}
+											/>
+										) : // <AddUserBtn placeholder={"Chat"} />
+										null}
 									</Stack>
 								</Box>
 							))}

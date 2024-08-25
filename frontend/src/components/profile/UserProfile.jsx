@@ -34,11 +34,6 @@ const UserProfile = () => {
 						></textarea>
 					</div>
 				</div>
-				<div className="flex items-center">
-					<span className="font-medium px-3">Activity</span>
-					<hr className=" w-full"></hr>
-				</div>
-				<Post />
 			</div>
 		</>
 	);

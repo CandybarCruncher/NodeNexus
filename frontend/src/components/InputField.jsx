@@ -1,7 +1,16 @@
 import { Box, TextField } from "@mui/material";
 import React from "react";
 
-const InputField = ({ name, type, value, placeholder, onChange, required }) => {
+const InputField = ({
+	name,
+	type,
+	value,
+	placeholder,
+	onChange,
+	required,
+	inputProps,
+	helperText,
+}) => {
 	return (
 		<Box
 			sx={{
@@ -20,6 +29,8 @@ const InputField = ({ name, type, value, placeholder, onChange, required }) => {
 					value={value}
 					onChange={onChange}
 					required={required}
+					inputProps={inputProps}
+					helperText={helperText}
 				/>
 			</div>
 		</Box>

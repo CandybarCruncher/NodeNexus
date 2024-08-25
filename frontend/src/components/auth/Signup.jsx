@@ -117,6 +117,8 @@ const Signup = () => {
 							value={name}
 							className="form-control rounded-xl"
 							placeholder="Full name"
+							inputProps={{ pattern: "^[a-zA-Z]+(?: [a-zA-Z]+)*$" }}
+							helperText={"Please enter your full name"}
 							onChange={(event) => {
 								setName(event.target.value);
 							}}
@@ -130,6 +132,7 @@ const Signup = () => {
 							value={username}
 							className="form-control rounded-xl"
 							placeholder="Username"
+							inputProps={{ pattern: "^[A-Za-z0-9_]{5,15}$" }}
 							onChange={(event) => {
 								setUsername(event.target.value);
 							}}
