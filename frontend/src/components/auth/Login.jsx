@@ -20,7 +20,7 @@ const Login = () => {
 			const userData = await config.post("/api/usr/login", existingUser);
 			setUserData(userData);
 			setPassword("");
-			navigate("/home");
+			navigate("/user");
 		} catch (error) {
 			setErrorMessage(error.response?.data?.message || "An error occurred");
 		}

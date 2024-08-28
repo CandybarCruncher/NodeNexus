@@ -44,7 +44,7 @@ const UserProfile = () => {
 					}}
 				>
 					<img
-						src={getUserData().pic}
+						src={getUserData()?.banner}
 						className="h-[15rem] w-full object-cover"
 					></img>
 				</Box>
@@ -55,7 +55,7 @@ const UserProfile = () => {
 					alignItems="center"
 				>
 					<Avatar
-						src={getUserData().pic}
+						src={getUserData()?.pic}
 						sx={{
 							width: 200,
 							height: 200,
@@ -70,13 +70,13 @@ const UserProfile = () => {
 							variant="h4"
 							sx={{ fontWeight: "bold" }}
 						>
-							{getUserData().name}
+							{getUserData()?.name}
 						</Typography>
 						<Typography
 							variant="body1"
 							color="textSecondary"
 						>
-							{getUserData().email}
+							@{getUserData()?.username}
 						</Typography>
 					</Box>
 					<Box
