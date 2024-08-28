@@ -1,8 +1,9 @@
 import axios from "axios";
 import { getUserData } from "./local";
+export const ENDPOINT = "http://localhost:6969";
 
 const config = axios.create({
-	baseURL: "http://localhost:6969",
+	baseURL: ENDPOINT,
 	headers: {
 		"Content-Type": "application/json",
 	},
@@ -10,9 +11,7 @@ const config = axios.create({
 
 config.interceptors.request.use((config) => {
 	const token = getUserData()?.token;
-	if (token) {
-		config.headers.Authorization = `Bearer ${token}`;
-	}
+	config.baseURL && (config.headers.Authorization = `Bearer ${token}`);
 	return config;
 });
 

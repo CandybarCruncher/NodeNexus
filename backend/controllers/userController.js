@@ -65,6 +65,7 @@ const authUser = asyncHandler(async (req, res) => {
 			_id: userExists._id,
 			name: userExists.name,
 			email: userExists.email,
+			username: userExists.username,
 			// isAdmin: userExists.isAdmin,
 			pic: userExists.pic,
 			token: generateToken(userExists._id),
@@ -89,4 +90,31 @@ const allUsers = asyncHandler(async (req, res) => {
 	res.send(Users);
 });
 
-module.exports = { allUsers, registerUser, authUser, userExists };
+const editUserDetails = asyncHandler(async (req, res) => {
+	try {
+		const updatedUser = await user.findByIdAndUpdate(req.params.id, req.body, {
+			new: true,
+		});
+		if (!updatedUser) {
+			return res.status(404).send({ message: "User not found" });
+		}
+		res.json({
+			_id: updatedUser._id,
+			name: updatedUser.name,
+			email: updatedUser.email,
+			username: updatedUser.username,
+			pic: updatedUser.pic,
+			token: generateToken(updatedUser._id), // Return new token
+		});
+	} catch (error) {
+		res.status(500).send({ message: error.message });
+	}
+});
+
+module.exports = {
+	allUsers,
+	registerUser,
+	authUser,
+	userExists,
+	editUserDetails,
+};

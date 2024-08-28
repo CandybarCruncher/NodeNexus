@@ -1,45 +1,122 @@
-import React from "react";
-import Post from "../profile/Post.jsx";
-import { faker } from "@faker-js/faker";
+import React, { useState } from "react";
+import EditIcon from "@mui/icons-material/Edit";
+import {
+	Avatar,
+	Box,
+	Button,
+	Stack,
+	Tab,
+	Tabs,
+	Typography,
+} from "@mui/material";
+import { getUserData } from "../../../local";
+import EditDetails from "./EditDetails";
 
 const UserProfile = () => {
+	const [tabIndex, setTabIndex] = useState(0);
+	const [isModalOpen, setIsModalOpen] = useState(false);
+
+	const handleTabChange = (event, newValue) => {
+		setTabIndex(newValue);
+	};
+
+	const handleModalOpen = () => {
+		setIsModalOpen(true);
+	};
+
+	const handleModalClose = () => {
+		setIsModalOpen(false);
+	};
+
 	return (
 		<>
-			<div className="ml-2 border rounded-xl mt-2">
-				<div className="rounded-t-xl overflow-hidden">
+			<Box
+				ml={1}
+				border={2}
+				height="100%"
+				borderRadius="0.75rem"
+			>
+				<Box
+					sx={{
+						overflow: "hidden",
+						borderTopLeftRadius: "0.75rem",
+						borderTopRightRadius: "0.75rem",
+					}}
+				>
 					<img
-						src={faker.image.image()}
-						className="h-[12rem] w-[65rem] object-cover"
+						src={getUserData().pic}
+						className="h-[15rem] w-full object-cover"
 					></img>
-				</div>
-				<div className="mt-4 ml-6 rounded-full flex">
-					<div>
-						<img
-							src={faker.image.avatar()}
-							className="size-52 rounded-full"
-						></img>
-						<p className="m-4 text-3xl font-semibold">
-							{faker.name.fullName()}
-						</p>
-					</div>
-					<span className="m-8 text-xl  font-semibold">2 posts</span>
-					<p className="m-8 text-xl font-semibold">2M nodes</p>
-					<div className="w-full grid justify-items-end">
-						<button className="btn bg-[#45a29e] rounded-full h-10 w-[9rem] mr-3">
-							Connect
-						</button>
-						<textarea
-							placeholder="Write your bio here..."
-							className="bg-[#0B0C10] border-solid border-2 rounded-3xl p-3 m-2 w-full"
-						></textarea>
-					</div>
-				</div>
-				<div className="flex items-center">
-					<span className="font-medium px-3">Activity</span>
-					<hr className=" w-full"></hr>
-				</div>
-				<Post />
-			</div>
+				</Box>
+				<Stack
+					p={2}
+					m={2}
+					direction="row"
+					alignItems="center"
+				>
+					<Avatar
+						src={getUserData().pic}
+						sx={{
+							width: 200,
+							height: 200,
+							border: "5px solid white",
+						}}
+					/>
+					<Box
+						ml={3}
+						width={"200%"}
+					>
+						<Typography
+							variant="h4"
+							sx={{ fontWeight: "bold" }}
+						>
+							{getUserData().name}
+						</Typography>
+						<Typography
+							variant="body1"
+							color="textSecondary"
+						>
+							{getUserData().email}
+						</Typography>
+					</Box>
+					<Box
+						sx={{
+							display: "flex",
+							justifyContent: "flex-end",
+							width: "100%",
+						}}
+					>
+						<Button
+							variant="outlined"
+							sx={{
+								borderRadius: 2,
+								color: "#45a29e",
+								fontWeight: "bold",
+							}}
+							onClick={handleModalOpen}
+						>
+							<EditIcon />
+							Edit Profile
+						</Button>
+					</Box>
+					<EditDetails
+						open={isModalOpen}
+						handleClose={handleModalClose}
+						userData={getUserData()}
+					/>
+				</Stack>
+
+				{/* <Tabs
+					value={tabIndex}
+					onChange={handleTabChange}
+					sx={{ marginTop: 2 }}
+					centered
+				>
+					<Tab label="Posts" />
+					<Tab label="Nodes" />
+					<Tab label="About" />
+				</Tabs> */}
+			</Box>
 		</>
 	);
 };

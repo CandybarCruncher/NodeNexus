@@ -4,7 +4,7 @@ const user = require("../models/userModel");
 const chat = require("../models/nodeModel");
 
 const allMessages = asyncHandler(async (req, res) => {
-	console.log(req.body);
+	// console.log(req.body);
 	try {
 		const Messages = await message
 			.find({ node: req.params.chatId })
@@ -33,7 +33,7 @@ const sendMessage = asyncHandler(async (req, res) => {
 
 	try {
 		var Message = await message.create(newMessage);
-		console.log(Message);
+		// console.log(Message);
 
 		Message = await Message.populate("sender", "name pic");
 		Message = await Message.populate("node");

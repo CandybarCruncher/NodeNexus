@@ -132,19 +132,38 @@ const TextMsg = forwardRef(({ msg }, ref) => {
 			ref={ref}
 		>
 			<Box
-				p={1.5}
+				px={1}
+				pt={1}
 				sx={{
 					backgroundColor:
 						msg.sender._id !== getUserData()._id ? "#45a29e" : "#454545",
-					borderRadius: 1.5,
+					borderRadius:
+						msg.sender._id !== getUserData()._id
+							? "0px 15px 15px 15px"
+							: "15px 0px 15px 15px",
 					width: "max-content",
 				}}
 			>
 				<Typography
 					variant="body2"
 					color={msg.sender._id !== getUserData()._id ? "#000" : "#fff"}
+					sx={{ whiteSpace: "pre-wrap" }}
 				>
 					{msg.content}
+				</Typography>
+				<Typography
+					color={msg.sender._id !== getUserData()._id ? "#000" : "grey"}
+					sx={{
+						display: "block",
+						textAlign: "right",
+						ml: 2,
+						fontSize: "9px",
+					}}
+				>
+					{new Date(msg.createdAt).toLocaleTimeString([], {
+						hour: "2-digit",
+						minute: "2-digit",
+					})}
 				</Typography>
 			</Box>
 		</Stack>

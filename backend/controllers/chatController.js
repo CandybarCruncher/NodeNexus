@@ -9,8 +9,8 @@ const accessChat = asyncHandler(async (req, res) => {
 		console.log("UserId param not sent with request");
 		return res.sendStatus(400);
 	}
-	console.log(`req.user._id: ${req.User._id}`);
-	console.log(`userId: ${userId}`);
+	// console.log(`req.user._id: ${req.User._id}`);
+	// console.log(`userId: ${userId}`);
 	var isChat = await chat
 		.find({
 			isCluster: false,
@@ -28,7 +28,7 @@ const accessChat = asyncHandler(async (req, res) => {
 	// console.log(req.User);
 
 	if (isChat.length > 0) {
-		res.send(isChat[0]);
+		return res.send(isChat[0]);
 	} else {
 		var chatData = {
 			chatName: "sender",
@@ -81,7 +81,7 @@ const createGroupChat = asyncHandler(async (req, res) => {
 	if (users.length < 2) {
 		return res
 			.status(400)
-			.send("More than 2 users are required to form a group chat");
+			.send({ message: "More than 2 users are required to form a group chat" });
 	}
 	users.push(req.User._id);
 
