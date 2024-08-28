@@ -9,7 +9,7 @@ const LandingPage = () => {
 		<>
 			<div className="test">
 				<BackgroundVideo />
-				<div className=" backdrop-blur-sm bg-white/5 rounded-3xl ">
+				<div className="max-w-[40rem] backdrop-blur-sm bg-white/5 rounded-3xl ">
 					<Outlet context={{ sharedValue, setSharedValue }} />
 				</div>
 			</div>

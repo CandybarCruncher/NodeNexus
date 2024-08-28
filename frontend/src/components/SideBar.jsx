@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import ContactCard from "./ContactCard";
-import { Box, IconButton, Skeleton, Stack, Tab, Tabs } from "@mui/material";
+import { Box, Skeleton, Stack, Tab, Tabs } from "@mui/material";
 import config from "../../config";
 import { getUserData } from "../../local";
 import CreateCluster from "./buttons/CreateCluster";
@@ -63,10 +63,8 @@ const SideBar = ({ closeSideBar }) => {
 				}}
 			>
 				<Tabs
-					id="pp"
 					value={value}
 					onChange={handleChange}
-					aria-label="basic tabs example"
 				>
 					<Tab
 						label="Nodes"

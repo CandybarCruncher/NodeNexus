@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
 	Avatar,
 	Typography,
@@ -6,13 +6,55 @@ import {
 	IconButton,
 	Modal,
 	Stack,
-	Divider,
+	Button,
+	TextField,
 } from "@mui/material";
 import ClusterMembers from "../ClusterMembers";
 import { faker } from "@faker-js/faker";
-import { getUserData } from "../../../local";
+import EditIcon from "@mui/icons-material/Edit";
+import { validate } from "../../../validatePattern";
+import ErrorHandler from "../ErrorHandler";
+import config from "../../../config";
 
 const UserCard = ({ userCard, setUserCard, chats, checkUser }) => {
+	const [showEdit, setShowEdit] = useState(false);
+	const [formData, setFormData] = useState({
+		chatName: chats[0]?.chatName,
+		chatId: chats[0]?._id,
+	});
+	console.log(chats);
+	const handleChange = (e) => {
+		setFormData({
+			...formData,
+			[e.target.name]: e.target.value,
+		});
+		console.log(formData);
+	};
+
+	const [errors, setErrors] = useState({});
+
+	const handleSubmit = async (e) => {
+		e.preventDefault();
+		const requiredFields = ["chatname"];
+		const validationErrors = validate(formData, requiredFields);
+
+		if (Object.keys(validationErrors).length > 0) {
+			setErrors(validationErrors);
+			return;
+		}
+		try {
+			const updatedChatname = await config.put("/api/cht/rename", formData);
+			setErrors({});
+			setShowEdit(false);
+		} catch (error) {
+			ErrorHandler(error);
+		}
+	};
+
+	const handleClick = () => {
+		setShowEdit(!showEdit);
+	};
+
 	const hideUserCard = () => {
 		setUserCard(false);
 	};
@@ -51,11 +93,48 @@ const UserCard = ({ userCard, setUserCard, chats, checkUser }) => {
 						src={(chats[0]?.isCluster && chats[0]?.icon) || checkUser()?.pic}
 					/>
 					<Box>
-						<Typography variant="h4">
-							{chats[0]?.chatName.localeCompare("sender")
-								? chats[0]?.chatName
-								: checkUser()?.name}
-						</Typography>
+						<Stack
+							direction={"row"}
+							alignItems={"center"}
+						>
+							{!showEdit ? (
+								<Typography
+									variant="h4"
+									sx={{ fontWeight: "bold" }}
+								>
+									{chats[0]?.chatName.localeCompare("sender")
+										? chats[0]?.chatName
+										: checkUser()?.name}
+								</Typography>
+							) : (
+								<TextField
+									name="chatName"
+									variant="standard"
+									error={Boolean(errors.name)}
+									helperText={errors.name}
+									onChange={handleChange}
+									value={formData.chatName}
+								/>
+							)}
+							{!showEdit ? (
+								chats[0].isCluster && (
+									<Button
+										sx={{ borderRadius: "50px" }}
+										onClick={handleClick}
+									>
+										<EditIcon />
+									</Button>
+								)
+							) : (
+								<Button
+									sx={{ borderRadius: "50px" }}
+									onClick={handleSubmit}
+								>
+									Save
+								</Button>
+							)}
+						</Stack>
+
 						{!chats[0].isCluster && (
 							<Typography>@{checkUser().username}</Typography>
 						)}

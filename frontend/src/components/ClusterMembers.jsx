@@ -23,7 +23,6 @@ const ClusterMembers = ({ chats }) => {
 							<Box
 								border={1}
 								borderRadius={2}
-								width={"24rem"}
 								height="11.11em"
 								sx={{
 									overflowY: "auto",

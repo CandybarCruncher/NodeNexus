@@ -9,7 +9,6 @@ const Login = () => {
 	const { sharedValue } = useOutletContext();
 	const [password, setPassword] = useState("");
 	const [errorMessage, setErrorMessage] = useState("");
-
 	const navigate = useNavigate();
 
 	const submitHandler = async (e) => {
@@ -61,9 +60,7 @@ const Login = () => {
 							name="password"
 							type="password"
 							value={password}
-							className="form-control rounded-xl w-96"
 							placeholder="Password"
-							required
 							onChange={(event) => setPassword(event.target.value)}
 						/>
 					</div>

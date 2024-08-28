@@ -22,6 +22,7 @@ const CreateCluster = () => {
 	const [users, setUsers] = useState([]);
 	const [grpCr, setGrpCr] = useState(false);
 	const [loading, setLoading] = useState(false);
+	const [errorMessage, setErrorMessage] = useState("");
 
 	const addUserToCluster = (userId) => {
 		if (!users.includes(userId)) {
@@ -46,7 +47,7 @@ const CreateCluster = () => {
 			setIcon(null);
 			setUsers([]);
 		} catch (error) {
-			ErrorHandler(error);
+			setErrorMessage(error.response?.data?.message || "An error occurred");
 		}
 	};
 
@@ -93,7 +94,6 @@ const CreateCluster = () => {
 			setChats(data);
 		} catch (error) {
 			ErrorHandler(error);
-			console.error(error);
 		}
 	};
 
@@ -121,8 +121,6 @@ const CreateCluster = () => {
 				<Modal
 					open={grpCr}
 					onClose={handleClose}
-					aria-labelledby="modal-title"
-					aria-describedby="modal-description"
 				>
 					<Box
 						sx={{
@@ -160,6 +158,7 @@ const CreateCluster = () => {
 									value={name}
 									placeholder={"Group name"}
 									onChange={(e) => setName(e.target.value)}
+									required
 								/>
 								<Stack
 									direction="row"
@@ -255,6 +254,11 @@ const CreateCluster = () => {
 										);
 									})}
 								</Box>
+								{errorMessage && (
+									<div className="text-red-500">
+										<p>{errorMessage}</p>
+									</div>
+								)}
 								<SubmitBtn Placeholder={"Create"} />
 							</Stack>
 						</form>

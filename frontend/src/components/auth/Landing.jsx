@@ -3,22 +3,39 @@ import { useNavigate, useOutletContext } from "react-router-dom";
 import config from "../../../config";
 import SubmitBtn from "../buttons/SubmitBtn";
 import InputField from "../InputField";
+import { validate } from "../../../validatePattern";
 
 const Landing = () => {
 	const { setSharedValue } = useOutletContext();
-	const [email, setEmail] = useState("");
-	const navigate = useNavigate();
+	const [formData, setFormData] = useState({
+		email: "",
+	});
+	const [errors, setErrors] = useState({});
 
+	const navigate = useNavigate();
+	const handleChange = (e) => {
+		const { name, value } = e.target;
+		setFormData({
+			...formData,
+			[name]: value,
+		});
+	};
 	const submitHandler = async (e) => {
 		e.preventDefault();
-		const newUser = { email };
-		setSharedValue(email);
+		const requiredFields = ["email"];
+		const validationErrors = validate(formData, requiredFields);
+
+		if (Object.keys(validationErrors).length > 0) {
+			setErrors(validationErrors);
+			return;
+		}
+		setSharedValue(formData.email);
 		try {
-			await config.post("/api/usr/email", newUser);
-			setEmail("");
+			await config.post("/api/usr/email", formData);
+			setFormData({ email: "" });
 			navigate("/login");
 		} catch (error) {
-			setEmail("");
+			setFormData({ email: "" });
 			navigate("/signup");
 		}
 	};
@@ -39,11 +56,12 @@ const Landing = () => {
 						<InputField
 							name="email"
 							type="email"
-							value={email}
-							className="form-control rounded-xl"
+							value={formData.email}
+							error={Boolean(errors.email)}
+							helperText={errors.email}
 							placeholder="email@domain.com"
+							onChange={handleChange}
 							required
-							onChange={(event) => setEmail(event.target.value)}
 						/>
 					</div>
 					<div className="mb-4">

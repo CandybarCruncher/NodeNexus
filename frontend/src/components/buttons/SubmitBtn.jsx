@@ -1,6 +1,6 @@
 import { Button } from "@mui/material";
 
-const SubmitBtn = ({ Placeholder }) => {
+const SubmitBtn = ({ Placeholder, onClick }) => {
 	return (
 		<Button
 			type="submit"
@@ -11,6 +11,7 @@ const SubmitBtn = ({ Placeholder }) => {
 				color: "black",
 				fontWeight: "bolder",
 			}}
+			onClick={onClick}
 		>
 			{Placeholder}
 		</Button>

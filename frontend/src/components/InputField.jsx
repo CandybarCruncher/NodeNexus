@@ -8,13 +8,14 @@ const InputField = ({
 	placeholder,
 	onChange,
 	required,
-	inputProps,
+	error,
 	helperText,
 }) => {
 	return (
 		<Box
 			sx={{
 				"& .MuiTextField-root": {},
+				mb: "1.5rem",
 			}}
 			noValidate
 			autoComplete="off"
@@ -29,7 +30,7 @@ const InputField = ({
 					value={value}
 					onChange={onChange}
 					required={required}
-					inputProps={inputProps}
+					error={error}
 					helperText={helperText}
 				/>
 			</div>

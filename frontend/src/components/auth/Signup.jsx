@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useNavigate, useOutletContext } from "react-router-dom";
 import SubmitBtn from "../buttons/SubmitBtn";
 import config from "../../../config";
@@ -14,21 +14,29 @@ import {
 	Stack,
 } from "@mui/material";
 import ErrorHandler from "../ErrorHandler";
+import { validate } from "../../../validatePattern";
 
 const Signup = () => {
 	const { sharedValue } = useOutletContext();
-	const [email, setEmail] = useState(sharedValue);
-	const [name, setName] = useState("");
-	const [username, setUsername] = useState("");
-	const [password, setPassword] = useState("");
-	const [gender, setGender] = useState("");
+	const [formData, setFormData] = useState({
+		name: "",
+		email: sharedValue,
+		password: "",
+		username: "",
+		gender: "male",
+	});
+	const [errors, setErrors] = useState({});
 	const [pic, setPic] = useState(null);
 	const [loading, setLoading] = useState(false);
-
 	const navigate = useNavigate();
-	useEffect(() => {
-		console.log("success__" + pic);
-	}, [pic]);
+
+	const handleChange = (e) => {
+		const { name, value } = e.target;
+		setFormData({
+			...formData,
+			[name]: value,
+		});
+	};
 
 	const uploadImage = async (pic) => {
 		try {
@@ -55,28 +63,29 @@ const Signup = () => {
 	};
 
 	const submitHandler = async (e) => {
-		try {
-			e.preventDefault();
+		e.preventDefault();
+		const requiredFields = ["email", "name", "username", "password"];
+		const validationErrors = validate(formData, requiredFields);
 
-			const newUser = {
-				email,
-				name,
-				username,
-				password,
-				gender,
-			};
+		if (Object.keys(validationErrors).length > 0) {
+			setErrors(validationErrors);
+			return;
+		}
+		try {
 			if (pic) {
-				newUser.pic = pic;
+				formData.pic = pic;
 			}
 
-			const userData = await config.post("/api/usr/signup", newUser);
+			const userData = await config.post("/api/usr/signup", formData);
 			setUserData(userData);
 
-			setName("");
-			setUsername("");
-			setEmail("");
-			setPassword("");
-			setGender("");
+			setFormData({
+				name: "",
+				email: "",
+				password: "",
+				username: "",
+				gender: "",
+			});
 			setPic(null);
 
 			navigate("/home");
@@ -97,75 +106,59 @@ const Signup = () => {
 			</div>
 			<form onSubmit={submitHandler}>
 				<div className="m-8">
-					<div className="mb-4">
-						<InputField
-							name="email"
-							type="text"
-							value={email}
-							className="form-control rounded-xl"
-							placeholder="email@domain.com"
-							onChange={(event) => {
-								setEmail(event.target.value);
-							}}
-							required
-						/>
-					</div>
-					<div className="mb-4">
-						<InputField
-							name="name"
-							type="text"
-							value={name}
-							className="form-control rounded-xl"
-							placeholder="Full name"
-							inputProps={{ pattern: "^[a-zA-Z]+(?: [a-zA-Z]+)*$" }}
-							helperText={"Please enter your full name"}
-							onChange={(event) => {
-								setName(event.target.value);
-							}}
-							required
-						/>
-					</div>
-					<div className="mb-4">
-						<InputField
-							name="username"
-							type="text"
-							value={username}
-							className="form-control rounded-xl"
-							placeholder="Username"
-							inputProps={{ pattern: "^[A-Za-z0-9_]{5,15}$" }}
-							onChange={(event) => {
-								setUsername(event.target.value);
-							}}
-							required
-						/>
-					</div>
-					<div className="mb-4">
-						<InputField
-							name="password"
-							type="password"
-							value={password}
-							className="form-control rounded-xl"
-							placeholder="Password"
-							onChange={(event) => {
-								setPassword(event.target.value);
-							}}
-							required
-						/>
-					</div>
+					<InputField
+						name="email"
+						type="email"
+						value={formData.email}
+						placeholder="email@domain.com"
+						onChange={handleChange}
+						error={Boolean(errors.email)}
+						helperText={errors.email}
+						required
+					/>
+					<InputField
+						name="name"
+						type="text"
+						value={formData.name}
+						placeholder="Full name"
+						onChange={handleChange}
+						error={Boolean(errors.name)}
+						helperText={errors.name}
+						required
+					/>
+
+					<InputField
+						name="username"
+						type="text"
+						value={formData.username}
+						placeholder="Username"
+						onChange={handleChange}
+						error={Boolean(errors.username)}
+						helperText={errors.username}
+						required
+					/>
+
+					<InputField
+						name="password"
+						type="password"
+						value={formData.password}
+						placeholder="Password"
+						onChange={handleChange}
+						error={Boolean(errors.password)}
+						helperText={errors.password}
+						required
+					/>
 					<Stack
 						direction="row"
 						alignItems="center"
 					>
-						<Box
-							className="mb-4"
-							sx={{ flexGrow: 1 }}
-						>
+						<Box sx={{ flexGrow: 1 }}>
 							<label
 								htmlFor="file-upload"
 								className="custom-file-upload"
 								style={{ marginRight: "10px" }}
 							>
-								Upload picture
+								Upload Profile Picture
 							</label>
 							<InputField
 								name="pic"
@@ -188,10 +181,9 @@ const Signup = () => {
 					<RadioGroup
 						aria-labelledby="demo-radio-buttons-group-label"
 						row
-						name="radio-buttons-group"
-						onChange={(event) => {
-							setGender(event.target.value);
-						}}
+						name="gender"
+						value={formData.gender}
+						onChange={handleChange}
 						required
 					>
 						<FormControlLabel

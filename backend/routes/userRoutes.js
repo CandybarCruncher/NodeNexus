@@ -4,6 +4,7 @@ const {
 	authUser,
 	allUsers,
 	userExists,
+	editUserDetails,
 } = require("../controllers/userController");
 const { protect } = require("../middleware/authMiddleware");
 
@@ -13,5 +14,6 @@ router.route("/users").get(protect, allUsers);
 router.route("/signup").post(registerUser);
 router.post("/login", authUser);
 router.post("/email", userExists);
+router.put("/edit/:id", editUserDetails);
 
 module.exports = router;
