@@ -21,6 +21,7 @@
 		"emoji-picker-react": "^4.11.1",
 		"install": "^0.13.0",
 		"lodash": "^4.17.21",
+		"nodenexus": "file:..",
 		"npm": "^10.8.2",
 		"phosphor-react": "^1.4.1",
 		"react": "^18.3.1",
