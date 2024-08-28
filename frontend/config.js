@@ -1,6 +1,6 @@
 import axios from "axios";
 import { getUserData } from "./local";
-export const ENDPOINT = "http://localhost:6969";
+export const ENDPOINT = "https://nodenexus-d11u.onrender.com/";
 
 const config = axios.create({
 	baseURL: ENDPOINT,
