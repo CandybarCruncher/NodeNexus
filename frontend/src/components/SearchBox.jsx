@@ -1,23 +1,16 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useContext } from "react";
 import config from "../../config";
 import _ from "lodash";
 import { Box, Stack } from "@mui/material";
 import ContactCard from "./ContactCard";
 import AddUserBtn from "./buttons/AddUserBtn";
 import ErrorHandler from "./ErrorHandler";
+import { NodeListContext } from "./conversation/ChatContext";
 
 const SearchBox = () => {
 	const [query, setQuery] = useState("");
 	const [users, setUsers] = useState([]);
-	const [addedUsers, setAddedUsers] = useState(() => {
-		const savedUsers = localStorage.getItem("addedUsers");
-		return savedUsers ? JSON.parse(savedUsers) : [];
-	});
-	const handleAddUser = (userId) => {
-		const newUsers = [...addedUsers, userId];
-		setAddedUsers(newUsers);
-		localStorage.setItem("addedUsers", JSON.stringify(newUsers));
-	};
+	const [nodeListContext, setNodeListContext] = useContext(NodeListContext);
 
 	const fetchUsers = async (searchQuery) => {
 		try {
@@ -85,14 +78,14 @@ const SearchBox = () => {
 										justifyContent={"space-between"}
 									>
 										<ContactCard chatDetails={user} />
-										{!addedUsers.includes(user._id) ? (
+										{!nodeListContext.some((node) =>
+											node.users.some((u) => u._id === user._id)
+										) ? (
 											<AddUserBtn
 												placeholder={"Add me"}
 												userId={user._id}
-												onAddUser={handleAddUser}
 											/>
-										) : // <AddUserBtn placeholder={"Chat"} />
-										null}
+										) : null}
 									</Stack>
 								</Box>
 							))}

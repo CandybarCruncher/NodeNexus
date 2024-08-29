@@ -11,7 +11,13 @@ const userModel = mongoose.Schema(
 			type: "String",
 			default: "https://icon-library.com/images/icon-user/icon-user-15.jpg",
 		},
+		banner: {
+			type: "String",
+			default:
+				"https://as1.ftcdn.net/v2/jpg/02/95/38/06/1000_F_295380677_lgebFC9qKtBSu7Fe4aVULhAfwQ89b6MC.jpg",
+		},
 		gender: { type: "String", required: true },
+		bio: { type: "string" },
 	},
 	{
 		timestamps: true,

@@ -33,7 +33,9 @@ const registerUser = asyncHandler(async (req, res) => {
 			name: User.name,
 			// isAdmin: user.isAdmin,
 			pic: User.pic,
+			banner: User.banner,
 			gender: User.gender,
+			bio: User.bio,
 			token: generateToken(User._id),
 		});
 	} else {
@@ -68,6 +70,9 @@ const authUser = asyncHandler(async (req, res) => {
 			username: userExists.username,
 			// isAdmin: userExists.isAdmin,
 			pic: userExists.pic,
+			banner: userExists.banner,
+			gender: userExists.gender,
+			bio: userExists.bio,
 			token: generateToken(userExists._id),
 		});
 	} else {

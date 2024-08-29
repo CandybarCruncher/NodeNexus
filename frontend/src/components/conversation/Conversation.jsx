@@ -1,22 +1,16 @@
 import { Box, Skeleton, Stack } from "@mui/material";
 import React, { useContext, useEffect, useRef, useState } from "react";
 import { LinkMsg, MediaMsg, ReplyMsg, TextMsg, TimeLine } from "./MsgTypes";
-import config from "../../../config";
 import { useParams } from "react-router-dom";
-import { ChatlogContext } from "./ChatContext";
-import ErrorHandler from "../ErrorHandler";
+import { ChatlogContext, LoadingContext } from "./ChatContext";
+import { socket } from "./Chats";
 
-const Conversation = ({ socket, closeMenu }) => {
+const Conversation = ({ closeMenu }) => {
 	const [chatlog, setChatlog] = useContext(ChatlogContext);
 
-	const { chatId } = useParams();
+	const { nodeId } = useParams();
 	const lastMessageRef = useRef(null);
-	const [loading, setLoading] = useState(true);
-
-	useEffect(() => {
-		setLoading(true);
-		fetchChats();
-	}, [chatId]);
+	const [loading, setLoading] = useContext(LoadingContext);
 
 	useEffect(() => {
 		// Scroll to the last message whenever chats are updated
@@ -28,7 +22,7 @@ const Conversation = ({ socket, closeMenu }) => {
 	//login user recieving a msg anywhere
 	useEffect(() => {
 		socket.on("message recieved", (newMessageRecieved) => {
-			if (chatId !== newMessageRecieved.node._id) {
+			if (nodeId !== newMessageRecieved.node._id) {
 				//   send notif
 			} else {
 				setChatlog([...chatlog, newMessageRecieved]);
@@ -36,16 +30,6 @@ const Conversation = ({ socket, closeMenu }) => {
 			}
 		});
 	});
-
-	const fetchChats = async () => {
-		try {
-			const { data } = await config.get(`/api/msg/${chatId}`);
-			setChatlog(data);
-			setLoading(false);
-		} catch (error) {
-			ErrorHandler(error);
-		}
-	};
 
 	return (
 		<Box

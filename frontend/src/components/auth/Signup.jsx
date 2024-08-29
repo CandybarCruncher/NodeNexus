@@ -88,7 +88,7 @@ const Signup = () => {
 			});
 			setPic(null);
 
-			navigate("/home");
+			navigate("/user");
 		} catch (error) {
 			ErrorHandler(error);
 		}
