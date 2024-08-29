@@ -9,8 +9,13 @@ import {
 import React, { useContext, useEffect, useRef, useState } from "react";
 import config from "../../../config";
 import { useParams } from "react-router-dom";
-import { SocketConnectedContext } from "./Chats";
-import { ChatlogContext, TypingContext, IsTypingContext } from "./ChatContext";
+import { socket } from "./Chats";
+import {
+	ChatlogContext,
+	TypingContext,
+	IsTypingContext,
+	SocketConnectedContext,
+} from "./ChatContext";
 import EmojiPicker from "emoji-picker-react";
 import ErrorHandler from "../ErrorHandler";
 import InsertEmoticonIcon from "@mui/icons-material/InsertEmoticon";
@@ -25,7 +30,7 @@ const StyledInput = styled(TextField)(({ theme }) => ({
 	},
 }));
 
-const Footer = ({ socket, closeMenu }) => {
+const Footer = ({ closeMenu }) => {
 	const [chatlog, setChatlog] = useContext(ChatlogContext);
 	//chatlog is not being used but removing it breaks the submitHandler
 	const [socketConnected, setSocketConnected] = useContext(
@@ -35,26 +40,35 @@ const Footer = ({ socket, closeMenu }) => {
 	const [isTyping, setIsTyping] = useContext(IsTypingContext); //other
 
 	const [content, setContent] = useState("");
-	const { chatId } = useParams();
+	const { nodeId } = useParams();
 
 	const [showEmojiPicker, setShowEmojiPicker] = useState(false);
 	const [oeb, setOeb] = useState(false);
 	const emojiPickerRef = useRef(null);
+	const [lastTypingTime, setLastTypingTime] = useState("");
+
+	var timerLength = 1500;
 
 	useEffect(() => {
-		socket.on("typing", () => {
-			setIsTyping(true);
-		});
-		socket.on("stop typing", () => {
-			setIsTyping(false);
-		});
+		setTimeout(() => {
+			var timeNow = new Date().getTime();
+			var timeDiff = timeNow - lastTypingTime;
+			if (timeDiff >= timerLength && typing) {
+				socket.emit("stop typing", nodeId);
+				setTyping(false);
+			}
+		}, timerLength);
 	});
+
+	useEffect(() => {
+		setContent("");
+	}, [nodeId]);
 
 	const submitHandler = async (e) => {
 		try {
 			e.preventDefault();
 			if (!content.trimEnd()) return;
-			const message = { content, chatId };
+			const message = { content, nodeId };
 			const { data } = await config.post("/api/msg", message);
 			setChatlog((prevChatlog) => [...prevChatlog, data]);
 			socket.emit("new message", data);
@@ -68,21 +82,11 @@ const Footer = ({ socket, closeMenu }) => {
 	const handleKeyDown = (e) => {
 		if (!socketConnected) return;
 		if (!typing) setTyping(true);
-		socket.emit("typing", chatId);
-
-		let lastTypingTime = new Date().getTime();
-		var timerLength = 1500;
-		setTimeout(() => {
-			var timeNow = new Date().getTime();
-			var timeDiff = timeNow - lastTypingTime;
-			if (timeDiff >= timerLength && typing) {
-				socket.emit("stop typing", chatId);
-				setTyping(false);
-			}
-		}, timerLength);
+		socket.emit("typing", nodeId);
+		setLastTypingTime(new Date().getTime());
 
 		if (e.key === "Enter" && !e.shiftKey) {
-			socket.emit("stop typing", chatId);
+			socket.emit("stop typing", nodeId);
 			submitHandler(e);
 		}
 	};

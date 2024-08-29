@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Outlet } from "react-router-dom";
 import NavBar from "../components/NavBar";
 import SideBar from "../components/SideBar";
+import ChatContext from "../components/conversation/ChatContext";
 
 const HomePage = () => {
 	const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -34,24 +35,26 @@ const HomePage = () => {
 
 	return (
 		<>
-			<NavBar
-				toggleMenu={toggleMenu}
-				openSideBar={openSideBar}
-				closeSideBar={closeSideBar}
-				isSideBarOpen={isSideBarOpen}
-				isMenuOpen={isMenuOpen}
-				openSearchBox={openSearchBox}
-				isSearchOpen={isSearchOpen}
-				closeSearchBox={closeSearchBox}
-			/>
-			<div className="flex">
-				<div className="hidden h-full lg:inline-block">
-					<SideBar />
+			<ChatContext>
+				<NavBar
+					toggleMenu={toggleMenu}
+					openSideBar={openSideBar}
+					closeSideBar={closeSideBar}
+					isSideBarOpen={isSideBarOpen}
+					isMenuOpen={isMenuOpen}
+					openSearchBox={openSearchBox}
+					isSearchOpen={isSearchOpen}
+					closeSearchBox={closeSearchBox}
+				/>
+				<div className="flex">
+					<div className="hidden h-full lg:inline-block">
+						<SideBar />
+					</div>
+					<div className="w-full m-2 rounded-2xl overflow-hidden">
+						<Outlet context={{ closeMenu }} />
+					</div>
 				</div>
-				<div className="w-full m-2 rounded-2xl overflow-hidden">
-					<Outlet context={{ closeMenu }} />
-				</div>
-			</div>
+			</ChatContext>
 		</>
 	);
 };

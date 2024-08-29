@@ -8,13 +8,17 @@ import {
 	CircularProgress,
 	Avatar,
 } from "@mui/material";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import InputField from "../InputField";
 import SubmitBtn from "./SubmitBtn";
 import config from "../../../config";
 import AddUserBtn from "./AddUserBtn";
 import { getUserData } from "../../../local";
 import ErrorHandler from "../ErrorHandler";
+import {
+	ClusterListContext,
+	NodeListContext,
+} from "../conversation/ChatContext";
 
 const CreateCluster = () => {
 	const [name, setName] = useState("");
@@ -23,6 +27,10 @@ const CreateCluster = () => {
 	const [grpCr, setGrpCr] = useState(false);
 	const [loading, setLoading] = useState(false);
 	const [errorMessage, setErrorMessage] = useState("");
+
+	const [nodeListContext, setNodeListContext] = useContext(NodeListContext);
+	const [clusterListContext, setClusterListContext] =
+		useContext(ClusterListContext);
 
 	const addUserToCluster = (userId) => {
 		if (!users.includes(userId)) {
@@ -41,7 +49,8 @@ const CreateCluster = () => {
 			if (icon) {
 				cluData.icon = icon;
 			}
-			await config.post("api/cht/group", cluData);
+			const data = await config.post("api/cht/group", cluData);
+			setClusterListContext((prevList) => [...prevList, data.data]);
 			setGrpCr(false);
 			setName("");
 			setIcon(null);
@@ -53,7 +62,9 @@ const CreateCluster = () => {
 
 	const handleClose = () => {
 		setGrpCr(false);
-		setUsers("");
+		setName("");
+		setIcon(null);
+		setUsers([]);
 	};
 
 	const uploadImage = async (icon) => {
@@ -77,21 +88,6 @@ const CreateCluster = () => {
 			setLoading(false);
 
 			return response.data.secure_url;
-		} catch (error) {
-			ErrorHandler(error);
-		}
-	};
-
-	const [chats, setChats] = useState([]);
-
-	useEffect(() => {
-		fetchChats();
-	}, []);
-
-	const fetchChats = async () => {
-		try {
-			const { data } = await config.get("/api/cht");
-			setChats(data);
 		} catch (error) {
 			ErrorHandler(error);
 		}
@@ -197,60 +193,58 @@ const CreateCluster = () => {
 										whiteSpace: "nowrap",
 									}}
 								>
-									{chats.map((chat) => {
+									{nodeListContext.map((node) => {
 										const userIdToCheck =
-											chat?.users[0]._id === getUserData()._id
-												? chat.users[1]?._id
-												: chat.users[0]?._id;
+											node?.users[0]._id === getUserData()._id
+												? node.users[1]?._id
+												: node.users[0]?._id;
 
 										const isUserAdded = users.includes(userIdToCheck);
 
 										return (
-											!chat.isCluster && (
+											<Stack
+												direction="row"
+												alignItems={"center"}
+												justifyContent={"space-between"}
+												key={node._id}
+												p={1}
+											>
 												<Stack
 													direction="row"
-													alignItems={"center"}
-													justifyContent={"space-between"}
-													key={chat._id}
-													p={1}
+													alignItems="center"
 												>
-													<Stack
-														direction="row"
-														alignItems="center"
+													<Avatar
+														src={
+															node.users[0]._id === getUserData()._id
+																? node.users[1].pic
+																: node.users[0].pic
+														}
+													></Avatar>
+													<Typography
+														fontWeight={600}
+														variant="h6"
+														ml={2}
 													>
-														<Avatar
-															src={
-																chat.users[0]._id === getUserData()._id
-																	? chat.users[1].pic
-																	: chat.users[0].pic
-															}
-														></Avatar>
-														<Typography
-															fontWeight={600}
-															variant="h6"
-															ml={2}
-														>
-															{chat.users[0]._id === getUserData()._id
-																? chat.users[1].name
-																: chat.users[0].name}
-														</Typography>
-													</Stack>
-
-													{isUserAdded ? (
-														<Chip
-															onDelete={() =>
-																removeUserFromCluster(userIdToCheck)
-															}
-														/>
-													) : (
-														<AddUserBtn
-															placeholder={"Add"}
-															addUser={() => addUserToCluster(userIdToCheck)}
-															userId={userIdToCheck}
-														/>
-													)}
+														{node.users[0]._id === getUserData()._id
+															? node.users[1].name
+															: node.users[0].name}
+													</Typography>
 												</Stack>
-											)
+
+												{isUserAdded ? (
+													<Chip
+														onDelete={() =>
+															removeUserFromCluster(userIdToCheck)
+														}
+													/>
+												) : (
+													<AddUserBtn
+														placeholder={"Add"}
+														addUser={() => addUserToCluster(userIdToCheck)}
+														userId={userIdToCheck}
+													/>
+												)}
+											</Stack>
 										);
 									})}
 								</Box>

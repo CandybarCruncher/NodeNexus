@@ -1,11 +1,16 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import ContactCard from "./ContactCard";
 import { Box, Skeleton, Stack, Tab, Tabs } from "@mui/material";
 import config from "../../config";
 import { getUserData } from "../../local";
+export const RoomsContext = React.createContext();
 import CreateCluster from "./buttons/CreateCluster";
 import ErrorHandler from "./ErrorHandler";
+import {
+	ClusterListContext,
+	NodeListContext,
+} from "./conversation/ChatContext";
 
 function CustomTabPanel(props) {
 	const { children, value, index, ...other } = props;
@@ -25,12 +30,15 @@ function CustomTabPanel(props) {
 
 const SideBar = ({ closeSideBar }) => {
 	const navigate = useNavigate();
-	const [chats, setChats] = useState([]);
+	const [rooms, setRooms] = useState([]);
 	const [value, setValue] = useState(0);
 	const [loading, setLoading] = useState(true);
+	const [nodeListContext, setNodeListContext] = useContext(NodeListContext);
+	const [clusterListContext, setClusterListContext] =
+		useContext(ClusterListContext);
 
-	const clickHandler = (chatId) => {
-		navigate(`/chat/${chatId}`);
+	const clickHandler = (roomId) => {
+		navigate(`/chat/${roomId}`);
 	};
 
 	const handleChange = (event, newValue) => {
@@ -39,15 +47,34 @@ const SideBar = ({ closeSideBar }) => {
 
 	useEffect(() => {
 		setLoading(true);
-		fetchChats();
+		fetchRooms();
 	}, [value]);
 
-	const fetchChats = async () => {
+	const fetchRooms = async () => {
 		try {
 			const { data } = await config.get("/api/cht");
 			// console.log(data);
-			setChats(data);
+			setRooms(data);
 			setLoading(false);
+			const nodes = [];
+			const clusters = [];
+
+			data.forEach((room) => {
+				if (room.isCluster) {
+					clusters.push(room);
+				} else {
+					nodes.push(room);
+				}
+			});
+
+			if (JSON.stringify(nodes) !== JSON.stringify(nodeListContext)) {
+				setNodeListContext(nodes);
+			}
+
+			// Only update clusterListContext if the new data is different
+			if (JSON.stringify(clusters) !== JSON.stringify(clusterListContext)) {
+				setClusterListContext(clusters);
+			}
 		} catch (error) {
 			ErrorHandler(error);
 		}
@@ -110,9 +137,10 @@ const SideBar = ({ closeSideBar }) => {
 								</Stack>
 							</Box>
 					  ))
-					: chats.map((chat) => (
+					: value === 0
+					? nodeListContext.map((room) => (
 							<Box
-								key={chat._id}
+								key={room._id}
 								sx={{
 									":hover": {
 										bgcolor: "#45a29e",
@@ -121,34 +149,48 @@ const SideBar = ({ closeSideBar }) => {
 									},
 								}}
 								onClick={() => {
-									clickHandler(chat._id);
+									clickHandler(room._id);
 									closeSideBar ? closeSideBar() : null;
 								}}
 							>
-								{!chat.isCluster && (
-									<CustomTabPanel
-										value={value}
-										index={0}
-									>
-										<ContactCard
-											chatDetails={
-												chat.users[0]._id == getUserData()._id
-													? chat.users[1]
-													: chat.users[0]
-											}
-										/>
-									</CustomTabPanel>
-								)}
-								{chat.isCluster && (
-									<CustomTabPanel
-										value={value}
-										index={1}
-									>
-										<ContactCard chatDetails={chat} />
-									</CustomTabPanel>
-								)}
+								<CustomTabPanel
+									value={value}
+									index={0}
+								>
+									<ContactCard
+										chatDetails={
+											room.users[0]._id == getUserData()._id
+												? room.users[1]
+												: room.users[0]
+										}
+									/>
+								</CustomTabPanel>
+							</Box>
+					  ))
+					: clusterListContext.map((room) => (
+							<Box
+								key={room._id}
+								sx={{
+									":hover": {
+										bgcolor: "#45a29e",
+										borderRadius: "20px",
+										cursor: "pointer",
+									},
+								}}
+								onClick={() => {
+									clickHandler(room._id);
+									closeSideBar ? closeSideBar() : null;
+								}}
+							>
+								<CustomTabPanel
+									value={value}
+									index={1}
+								>
+									<ContactCard chatDetails={room} />
+								</CustomTabPanel>
 							</Box>
 					  ))}
+
 				<CreateCluster />
 			</Box>
 		</div>

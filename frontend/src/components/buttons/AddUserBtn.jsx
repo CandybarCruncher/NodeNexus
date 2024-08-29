@@ -1,15 +1,18 @@
 import { Button } from "@mui/material";
-import React from "react";
+import React, { useContext } from "react";
 import config from "../../../config";
 import ErrorHandler from "../ErrorHandler";
 import PersonAddAltIcon from "@mui/icons-material/PersonAddAlt";
+import { NodeListContext } from "../conversation/ChatContext";
 
-const AddUserBtn = ({ userId, addUser, onAddUser, placeholder }) => {
+const AddUserBtn = ({ userId, addUser, placeholder }) => {
+	const [nodeListContext, setNodeListContext] = useContext(NodeListContext);
 	const addNewNode = async () => {
 		try {
-			const currentUser = { userId };
-			await config.post("/api/cht", currentUser);
-			onAddUser(userId);
+			const userToAdd = { userId };
+			const data = await config.post("/api/cht", userToAdd);
+			setNodeListContext((prevList) => [...prevList, data.data]);
+			// console.log(nodeListContext);
 		} catch (error) {
 			ErrorHandler(error);
 		}

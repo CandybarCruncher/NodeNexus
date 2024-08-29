@@ -9,14 +9,13 @@ import {
 	styled,
 	Typography,
 } from "@mui/material";
-import config from "../../../config";
-import { useParams } from "react-router-dom";
 import { getUserData } from "../../../local";
-import { IsTypingContext, TypingContext } from "./ChatContext";
+import { IsTypingContext, NodeContext, TypingContext } from "./ChatContext";
 import UserCard from "../profile/UserCard";
-import ErrorHandler from "../ErrorHandler";
+import { socket } from "./Chats";
+import { useParams } from "react-router-dom";
 
-const Header = ({ socket }) => {
+const Header = () => {
 	const StyledBadge = styled(Badge)(({ theme }) => ({
 		"& .MuiBadge-badge": {
 			backgroundColor: online ? "#44b700" : "red",
@@ -46,38 +45,22 @@ const Header = ({ socket }) => {
 		},
 	}));
 
-	const [chats, setChats] = useState([]);
+	const [node, setNode] = useContext(NodeContext);
 	const [typing, setTyping] = useContext(TypingContext); //self
 	const [isTyping, setIsTyping] = useContext(IsTypingContext); //other
 	const [online, setOnline] = useState(false);
 	const [userCard, setUserCard] = useState(false);
-
-	const { chatId } = useParams();
-	useEffect(() => {
-		fetchChats();
-
-		// console.log(chats[0]);
-		// console.log(chats[0].chatName);
-	}, [chatId]);
-
-	const fetchChats = async () => {
-		try {
-			const { data } = await config.get(`/api/cht/${chatId}`);
-			// console.log(data);
-			setChats(data);
-		} catch (error) {
-			ErrorHandler(error);
-		}
-	};
+	const { nodeId } = useParams();
 	const checkUser = () => {
 		try {
-			return chats[0]?.users[0]._id == getUserData()._id
-				? chats[0]?.users[1]
-				: chats[0]?.users[0];
+			return node[0]?.users[0]._id == getUserData()._id
+				? node[0]?.users[1]
+				: node[0]?.users[0];
 		} catch (error) {
 			console.error(error);
 		}
 	};
+
 	useEffect(() => {
 		socket.emit("checkRoom", checkUser()?._id, (exists) => {
 			if (exists) {
@@ -88,7 +71,13 @@ const Header = ({ socket }) => {
 				// console.log("Room does not exist.");
 			}
 		});
-	}, [typing, isTyping]);
+		socket.on("typing", () => {
+			setIsTyping(true);
+		});
+		socket.on("stop typing", () => {
+			setIsTyping(false);
+		});
+	});
 
 	const showUserCard = () => {
 		setUserCard(true);
@@ -121,12 +110,10 @@ const Header = ({ socket }) => {
 					}}
 				>
 					<Box>
-						{chats[0]?.isCluster ? (
+						{node[0]?.isCluster ? (
 							<Avatar
-								alt={chats[0]?.chatName || checkUser()?.name}
-								src={
-									(chats[0]?.isCluster && chats[0]?.icon) || checkUser()?.pic
-								}
+								alt={node[0]?.chatName || checkUser()?.name}
+								src={(node[0]?.isCluster && node[0]?.icon) || checkUser()?.pic}
 							></Avatar>
 						) : (
 							<StyledBadge
@@ -135,9 +122,9 @@ const Header = ({ socket }) => {
 								variant="dot"
 							>
 								<Avatar
-									alt={chats[0]?.chatName || checkUser()?.name}
+									alt={node[0]?.chatName || checkUser()?.name}
 									src={
-										(chats[0]?.isCluster && chats[0]?.icon) || checkUser()?.pic
+										(node[0]?.isCluster && node[0]?.icon) || checkUser()?.pic
 									}
 								></Avatar>
 							</StyledBadge>
@@ -145,13 +132,13 @@ const Header = ({ socket }) => {
 					</Box>
 					<Stack spacing={0.2}>
 						<Typography variant="subtitle">
-							{chats[0]?.chatName.localeCompare("sender")
-								? chats[0]?.chatName
+							{node[0]?.chatName.localeCompare("sender")
+								? node[0]?.chatName
 								: checkUser()?.name}
 						</Typography>
-						{chats[0]?.isCluster ? null : (
+						{node[0]?.isCluster ? null : (
 							<Typography variant="caption">
-								{!typing && isTyping ? <div>typing...</div> : <></>}
+								{!typing && isTyping && online ? <div>typing...</div> : <></>}
 							</Typography>
 						)}
 					</Stack>
@@ -161,7 +148,7 @@ const Header = ({ socket }) => {
 						userCard={userCard}
 						setUserCard={setUserCard}
 						checkUser={checkUser}
-						chats={chats}
+						chats={node}
 					/>
 				)}
 				<Stack
