@@ -12,6 +12,8 @@ import SearchIcon from "@mui/icons-material/Search";
 import NotificationsIcon from "@mui/icons-material/Notifications";
 import ChatIcon from "@mui/icons-material/Chat";
 import PersonIcon from "@mui/icons-material/Person";
+import ToggleSwitch from "./ToggleSwitch";
+import { useTheme } from "../App";
 
 const NavBar = ({
 	toggleMenu,
@@ -26,6 +28,8 @@ const NavBar = ({
 	const handleLogout = () => {
 		clearUserData();
 	};
+
+	const { isDarkMode, toggleTheme } = useTheme();
 
 	return (
 		<>
@@ -71,6 +75,10 @@ const NavBar = ({
 						</div>
 						<div className="flex items-center">
 							<div className="hidden sm:flex space-x-4">
+								{/* <ToggleSwitch
+									isDarkMode={isDarkMode}
+									toggleTheme={toggleTheme}
+								/> */}
 								<a href="/notifications">
 									<NotificationsActiveIcon
 										sx={{
@@ -155,6 +163,12 @@ const NavBar = ({
 										<PersonIcon />
 										Your Profile
 									</a>
+									{/* <div className="text-center">
+										<ToggleSwitch
+											isDarkMode={isDarkMode}
+											toggleTheme={toggleTheme}
+										/>
+									</div> */}
 									<a
 										href="/"
 										onClick={handleLogout}

@@ -16,7 +16,7 @@
 		"@emotion/styled": "^11.13.0",
 		"@faker-js/faker": "^8.4.1",
 		"@mui/icons-material": "^5.16.7",
-		"@mui/material": "^5.16.6",
+		"@mui/material": "^5.16.7",
 		"axios": "^1.7.2",
 		"emoji-picker-react": "^4.11.1",
 		"install": "^0.13.0",
