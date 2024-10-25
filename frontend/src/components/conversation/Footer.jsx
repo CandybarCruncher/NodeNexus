@@ -56,6 +56,7 @@ const Footer = ({ socket, closeMenu }) => {
 			if (!content.trimEnd()) return;
 			const message = { content, chatId };
 			const { data } = await config.post("/api/msg", message);
+			// data decrpyt
 			setChatlog((prevChatlog) => [...prevChatlog, data]);
 			socket.emit("new message", data);
 			setContent("");
