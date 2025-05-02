@@ -17,7 +17,6 @@ An advanced web application designed to facilitate seamless interaction and coll
 
 - **Cluster Management:** Users can create and manage groups for specific topics or interests.
 - **Group Renaming:** You can rename clusters as needed.
-- \*\*
 
 ### **4. Form Validation & Error Handling:**
 
@@ -56,6 +55,13 @@ git clone https://github.com/CandybarCruncher/NodeNexus
 npm install
 ```
 
+### Start the server
+
+```bash
+npm run start
+```
+
+### Open a new terminal
 ### Go to the frontend directory and install dependencies
 
 ```bash
@@ -63,17 +69,9 @@ cd frontend
 npm install
 ```
 
-### Start the server
-
-```bash
-npm run start
-```
-
 ### Start the Client
 
 ```bash
-// open a new terminal
-cd frontend
 npm run dev
 ```
 
@@ -81,25 +79,22 @@ npm run dev
 
 ### **User Profile**
 
-![user profile](https://media.discordapp.net/attachments/1196447504527528009/1278360761915412613/image.png?ex=66d085bc&is=66cf343c&hm=b908d5e8e7679f457aca902953663565e59048095a67e6e0bcb25e39a24787b9&=&format=webp&quality=lossless&width=1440&height=426)
+![user profile](https://res.cloudinary.com/dwkgrubve/image/upload/v1746169346/NodeNexus_Sample/erwosmm3zv685tn2fcnc.png)
 
 ### **Conversing with Dr. Doom**
 
-![conversation](https://cdn.discordapp.com/attachments/1196447504527528009/1278364413426139167/image.png?ex=66d08923&is=66cf37a3&hm=8b74fe1774cb95a33070b63bf43f32671c4db62197f44b5c58efa732f8fba904&)
+![conversation](https://res.cloudinary.com/dwkgrubve/image/upload/v1746169347/NodeNexus_Sample/fhlxvswsyatnj4aldhei.png)
 
 ### **Creating Cluster**
 
-![Create cluster](https://cdn.discordapp.com/attachments/1196447504527528009/1278361645558796351/image.png?ex=66d0868f&is=66cf350f&hm=c2c804d92dc92f919ee569fac62391ab508d62f3c0cd2473efe59219c85508f3&)
+![Create cluster](https://res.cloudinary.com/dwkgrubve/image/upload/v1746169346/NodeNexus_Sample/xygge1u6gicnt8yuirjw.png)
 
 ### **Profile Card**
 
-![User mini card](https://cdn.discordapp.com/attachments/1196447504527528009/1278364661640724590/image.png?ex=66d0895e&is=66cf37de&hm=54a3f1c433f2e86d90656c64382ed46eaf63b3fa4eb88dda4e992fc3c22e6d78&)
+![User mini card](https://res.cloudinary.com/dwkgrubve/image/upload/v1746169347/NodeNexus_Sample/zhedo7ousjxetnwmomef.png)
 
-## My code is purrfect, YOU are the problem.
-
-![Alt text](https://gratisography.com/wp-content/uploads/2024/01/gratisography-cyber-kitty-800x525.jpg)
 
 ### Made by
 
-- [Cruncher](https://github.com/CandybarCruncher)
-- [Omm](https://github.com/bisweswarsahoo)
+[<img src="https://github.com/CandybarCruncher.png" width="40" height="40">](https://github.com/CandybarCruncher)
+[<img src="https://github.com/bisweswarsahoo.png" width="40" height="40">](https://github.com/bisweswarsahoo)
